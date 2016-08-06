@@ -1608,17 +1608,19 @@
     CGFloat cx = circleCenter.x;
     
     CGFloat cy = circleCenter.y;
-    
+    NSLog(@"++++++++++%f________%f",cx,cy);
     /* 横向越界 */
     // 右边越界
     if (circleCenter.x + targetView.frame.size.width / 2 > targetView.superview.frame.size.width) {
         
         cx = targetView.superview.frame.size.width - targetView.frame.size.width / 2;
+            NSLog(@"++++++++++%f",cx);
     }
     // 左边越界
     else if (circleCenter.x - targetView.frame.size.width / 2 < 4) {
         
         cx = targetView.frame.size.width / 2 + 4;
+            NSLog(@"++++++++++%f",cx);
     }
     
     /* 纵向越界 */
@@ -1626,11 +1628,13 @@
     if (circleCenter.y + targetView.frame.size.height / 2 > targetView.superview.frame.size.height) {
         
         cy = targetView.superview.frame.size.height - targetView.frame.size.height / 2;
+            NSLog(@"++++++++++%f",cy);
     }
     // 上边越界
     else if (circleCenter.y - targetView.frame.size.height / 2 < 0) {
         
         cy = targetView.frame.size.height / 2;
+            NSLog(@"++++++++++%f",cy);
     }
     
     return CGPointMake(cx, cy);

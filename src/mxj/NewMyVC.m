@@ -39,6 +39,7 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     [self.navigationController setNavigationBarHidden:YES];
+    [self reloadProxy];
 }
 
 -(void)viewDidLoad{
@@ -63,7 +64,7 @@
     [topView addSubview:rightButton];
     [rightButton addTarget:self action:@selector(searchFriend) forControlEvents:UIControlEventTouchUpInside];
     [self reSignTime];
-    [self reloadProxy];
+
 }
 
 -(void)initView{
