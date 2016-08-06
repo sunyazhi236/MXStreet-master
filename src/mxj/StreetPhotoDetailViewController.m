@@ -2218,7 +2218,7 @@ StreetsnapInfo *publishInfo = nil;
         NSString *new_url=[string2 stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         
         if (_isQQShare) {
-            QQApiURLObject *object = [QQApiURLObject objectWithURL:[NSURL URLWithString:new_url] title:[NSString stringWithFormat:@"%@%@", publishInfo.userName,SHARE_TITLE] description:publishInfo.streetsnapContent previewImageURL:url targetContentType:QQApiURLTargetTypeNews];
+            QQApiNewsObject *object = [QQApiNewsObject objectWithURL:[NSURL URLWithString:new_url] title:[NSString stringWithFormat:@"%@%@", publishInfo.userName,SHARE_TITLE] description:publishInfo.streetsnapContent previewImageURL:url targetContentType:QQApiURLTargetTypeNews];
             NSLog(@"++++%@,%@",url,new_url);
             SendMessageToQQReq *req = [SendMessageToQQReq reqWithContent:object];
             QQApiSendResultCode send = [QQApiInterface sendReq:req];
