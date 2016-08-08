@@ -56,10 +56,6 @@
     [self.navigationController setNavigationBarHidden:YES];
     [_shareView setHidden:YES];
     
-    
-    pageNum = 1;
-    
-    [self reqProxy];
 }
 
 - (NSString *)userId
@@ -89,7 +85,8 @@
     [self.view addSubview:self.tableView];
     
     [self initNavigationButton];
-
+    pageNum = 1;
+    [self reqProxy];
 }
 
 - (void)initNavigationButton
