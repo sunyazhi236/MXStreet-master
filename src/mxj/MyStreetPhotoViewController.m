@@ -103,7 +103,7 @@
     _moreButton = [UIButton buttonWithType:UIButtonTypeCustom];
     _moreButton.frame = CGRectMake(SCREENWIDTH - 60, 0, 60, 64);
     [_moreButton setImage:[UIImage imageNamed:@"more9-0"] forState:UIControlStateNormal];
-    [_moreButton addTarget:self action:@selector(backImageClick) forControlEvents:UIControlEventTouchUpInside];
+    [_moreButton addTarget:self action:@selector(moreBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_moreButton];
 }
 
@@ -780,23 +780,34 @@
 }
 
 //更多按钮点击事件
-//- (void)moreBtnClick:(id)sender {
-//    if (_type == 1) {
-//
-//        NSString *str;
-//        if ([userInfo.followFlag isEqualToString:@"0"]) { //未关注
-//        } else if([userInfo.followFlag isEqualToString:@"1"]) { //已关注
-//            str = @"取消关注";
-//        }
-//        
-//        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"加入黑名单" otherButtonTitles:str, nil];
-//        // 其他人的主页
-//        actionSheet.tag = 3000;
-//        [actionSheet showInView:self.view];
-//        
-//        return;
-//    }
-//    
+- (void)moreBtnClick:(id)sender {
+    if (_type == 1) {
+
+        NSString *str;
+        if ([userInfo.followFlag isEqualToString:@"0"]) { //未关注
+        } else if([userInfo.followFlag isEqualToString:@"1"]) { //已关注
+            str = @"取消关注";
+        }
+        
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"加入黑名单" otherButtonTitles:str, nil];
+        // 其他人的主页
+        actionSheet.tag = 3000;
+        [actionSheet showInView:self.view];
+        
+        return;
+    }
+    personImageOrBackImageClick = NO;
+    //弹出相机及相册选择页面
+    CGRect rect = _openPhotoView.frame;
+    rect.size.width = SCREEN_WIDTH;
+    rect.size.height = SCREEN_HEIGHT;
+    _openPhotoView.frame = rect;
+    [self.view addSubview:_openPhotoView];
+    [_backGroundImageView setHidden:NO];
+    [_bigPersonImageView setHidden:YES];
+    _backGroundImageView.imageURL = [CustomUtil getPhotoURL:[LoginModel shareInstance].backgroundImage];
+    [_changePhotoLabel setText:@"更换背景"];
+    
 //    _shareView.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 //    //设置分享按钮的布局
 //    NSArray *firstLineBtnArray = [NSArray arrayWithObjects:_weixinBtn, _pengyouquanBtn, _qqBtn, _qqkongjianBtn, nil];
@@ -829,7 +840,7 @@
 //    [self.view addSubview:_shareView];
 //    //显示分享视图
 //    [_shareView setHidden:NO];
-//}
+}
 
 //编辑资料按钮点击事件
 - (IBAction)editDocBtnClick:(id)sender {
