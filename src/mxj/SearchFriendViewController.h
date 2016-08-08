@@ -8,7 +8,7 @@
 
 #import "BaseViewController.h"
 
-@interface SearchFriendViewController : BaseViewController<UITableViewDelegate, UITableViewDataSource,TencentSessionDelegate>
+@interface SearchFriendViewController : BaseViewController<UITableViewDelegate, UITableViewDataSource,TencentSessionDelegate, WXApiDelegate>
 
 @property (strong, nonatomic) IBOutlet UITableView *searchFriendTableView; //搜索好友TableView
 @property (strong, nonatomic) IBOutlet UITableViewCell *weiboCell;   //微博Cell

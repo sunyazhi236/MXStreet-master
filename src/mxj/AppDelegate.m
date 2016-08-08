@@ -19,9 +19,11 @@
 #import "StreetPhotoDetailViewController.h"
 #import <Bugly/Bugly.h>
 #import "LoginModel.h"
+#import "StreetPhotoDetailViewController.h"
+#import "SearchFriendViewController.h"
+#import "PublishViewController.h"
 
 #define BUGLY_APP_ID @"900029804"
-
 @interface AppDelegate () <BuglyDelegate>
 {
     NSTimer *timer; //密码修改监听用定时器
@@ -542,7 +544,34 @@
     } else if ([url.scheme isEqualToString:[NSString stringWithFormat:@"wb%@", XINLANGWEIBO_APPKEY]]) {
         return [WeiboSDK handleOpenURL:url delegate:[CustomUtil shareInstance]];
     } else if ([url.scheme isEqualToString:WEIXIN_APPKEY]) {
-        return [WXApi handleOpenURL:url delegate:[CustomUtil shareInstance]];
+        NSUserDefaults *userDefault=[NSUserDefaults standardUserDefaults];
+        NSString *detailString =[userDefault objectForKey:@"StreetPhoto"];
+        if (detailString) {
+            [userDefault removeObjectForKey:@"StreetPhoto"];
+            [userDefault synchronize];
+            StreetPhotoDetailViewController *detail=[[StreetPhotoDetailViewController alloc]init];
+            return [WXApi handleOpenURL:url delegate:detail];
+        }
+        NSUserDefaults *userDefault2=[NSUserDefaults standardUserDefaults];
+        NSString *searchString =[userDefault2 objectForKey:@"SearchFriend"];
+        if (searchString) {
+            [userDefault2 removeObjectForKey:@"SearchFriend"];
+            [userDefault2 synchronize];
+            SearchFriendViewController *search=[[SearchFriendViewController alloc]init];
+            return [WXApi handleOpenURL:url delegate:search];
+        }
+        NSUserDefaults *userDefault3=[NSUserDefaults standardUserDefaults];
+        NSString *publishString =[userDefault3 objectForKey:@"PublishVC"];
+        if (publishString) {
+            [userDefault3 removeObjectForKey:@"PublishVC"];
+            [userDefault3 synchronize];
+            PublishViewController *publish=[[PublishViewController alloc]init];
+            return [WXApi handleOpenURL:url delegate:publish];
+        }
+        else{
+             return [WXApi handleOpenURL:url delegate:[CustomUtil shareInstance]];
+        }
+    
     }
     
     return YES;

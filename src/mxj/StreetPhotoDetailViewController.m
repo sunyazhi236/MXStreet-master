@@ -29,8 +29,9 @@
 #define ZANUSR_Y_OFFSET 10 //点赞用户头像上下空白间距
 #define Y_OFFSET 10 //控件之间的垂直间距
 static TencentOAuth *_tencentOAuth= nil;
+static  NSString *new_url;
 StreetsnapInfo *publishInfo = nil;
-@interface StreetPhotoDetailViewController () <UITextFieldDelegate,TencentSessionDelegate, WXApiDelegate>
+@interface StreetPhotoDetailViewController () <UITextFieldDelegate,TencentSessionDelegate>
 {
     UIView *keyBoardView; //键盘遮罩
     
@@ -2150,7 +2151,7 @@ StreetsnapInfo *publishInfo = nil;
         return;
     }
     _isWeiXinShare = YES;
-    
+    [CustomUtil shareInstance].personOrZone=YES;
     [self outhWeixin];
 }
 
@@ -2161,7 +2162,7 @@ StreetsnapInfo *publishInfo = nil;
         return;
     }
     _isWeiXinShare = NO;
-    
+     [CustomUtil shareInstance].personOrZone=NO;
     [self outhWeixin];
 }
 
@@ -2196,18 +2197,34 @@ StreetsnapInfo *publishInfo = nil;
     NSString *string=[NSString stringWithFormat:@"streetsnapId=%@&place=%@&cityFlag=%@&current=%@&userId=%@&pagesize=%@&type=%@",_streetsnapId, [GetStreetsnapListInput shareInstance].place, [GetStreetsnapListInput shareInstance].cityFlag, [GetStreetsnapListInput shareInstance].current, [GetStreetsnapListInput shareInstance].userId, [GetStreetsnapListInput shareInstance].pagesize, [GetStreetsnapListInput shareInstance].type];
     
     NSString *string2=[NSString stringWithFormat:@"%@%@%@%@",@"http://",NET_BASE_URL,@"/maoxj/views/html5page/details.html?",string];
-    NSString *new_url=[string2 stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    new_url=[string2 stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSString *message=[NSString stringWithFormat:@"%@%@",@"毛线街－记录我的毛线·生活",new_url];
 
     StreetsnapInfo *info = [[StreetsnapInfo alloc] initWithDict:_streetsnapInfo];
     [CustomUtil sinaLogin:YES viewCtrl:@"StreetPhotoDetailViewController" personOrZone:NO inviteUser:NO imagePath:info.photo1 shareContent:message];
 }
-
+//代理-登录成功
+-(void)tencentDidLogin
+{
+    if (_tencentOAuth.accessToken && 0!=[_tencentOAuth.accessToken length]) {
+        //记录登录用户的OpenID、Token以及过期时间
+        [TKQQLogin shareInstance].openId = _tencentOAuth.openId;
+        [TKQQLogin shareInstance].token = _tencentOAuth.accessToken;
+        [TKQQLogin shareInstance].expirationDate = _tencentOAuth.expirationDate;
+        
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *path = [paths objectAtIndexCheck:0];
+        NSString *filePath = [path stringByAppendingPathComponent:@"TKQQLogin.plist"];
+        NSMutableDictionary *dict = [CustomUtil modelToDictionary:[TKQQLogin shareInstance]];
+        [dict writeToFile:filePath atomically:YES];
+        [_tencentOAuth getUserInfo];
+    } else {
+        //[CustomUtil showToastWithText:@"登录失败" view:kWindow];
+    }
+}
 //获取用户信息代理
 -(void)getUserInfoResponse:(APIResponse *)response{
     if (response.retCode == URLREQUEST_SUCCEED) {
-        NSDictionary *dict = response.jsonResponse;
-        DLog(@"dict = %@", dict);
         StreetsnapInfo *info = [[StreetsnapInfo alloc] initWithDict:_streetsnapInfo];
         NSString *str=[NSString stringWithFormat:@"%@%@%@",@"http://",NET_BASE_URL,info.photo1];
         NSURL *url=[NSURL URLWithString:str];
@@ -2215,11 +2232,10 @@ StreetsnapInfo *publishInfo = nil;
         NSString *string=[NSString stringWithFormat:@"streetsnapId=%@&place=%@&cityFlag=%@&current=%@&userId=%@&pagesize=%@&type=%@",_streetsnapId, [GetStreetsnapListInput shareInstance].place, [GetStreetsnapListInput shareInstance].cityFlag, [GetStreetsnapListInput shareInstance].current, [GetStreetsnapListInput shareInstance].userId, [GetStreetsnapListInput shareInstance].pagesize, [GetStreetsnapListInput shareInstance].type];
          
         NSString *string2=[NSString stringWithFormat:@"%@%@%@%@",@"http://",NET_BASE_URL,@"/maoxj/views/html5page/details.html?",string];
-        NSString *new_url=[string2 stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        new_url=[string2 stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         
         if (_isQQShare) {
             QQApiNewsObject *object = [QQApiNewsObject objectWithURL:[NSURL URLWithString:new_url] title:[NSString stringWithFormat:@"%@%@", publishInfo.userName,SHARE_TITLE] description:publishInfo.streetsnapContent previewImageURL:url targetContentType:QQApiURLTargetTypeNews];
-            NSLog(@"++++%@,%@",url,new_url);
             SendMessageToQQReq *req = [SendMessageToQQReq reqWithContent:object];
             QQApiSendResultCode send = [QQApiInterface sendReq:req];
             if (EQQAPISENDSUCESS == send) {
@@ -2251,12 +2267,16 @@ StreetsnapInfo *publishInfo = nil;
 
 - (void)outhWeixin
 {
+    NSUserDefaults *userdefault=[NSUserDefaults standardUserDefaults];
+    [userdefault setObject:@"Detail" forKey:@"StreetPhoto"];
+    [userdefault synchronize];
+    
+    [CustomUtil shareInstance].shareFlag=YES;
     NSString *string=[NSString stringWithFormat:@"streetsnapId=%@&place=%@&cityFlag=%@&current=%@&userId=%@&pagesize=%@&type=%@",_streetsnapId, [GetStreetsnapListInput shareInstance].place, [GetStreetsnapListInput shareInstance].cityFlag, [GetStreetsnapListInput shareInstance].current, [GetStreetsnapListInput shareInstance].userId, [GetStreetsnapListInput shareInstance].pagesize, [GetStreetsnapListInput shareInstance].type];
     
     NSString *string2=[NSString stringWithFormat:@"%@%@%@%@",@"http://",NET_BASE_URL,@"/maoxj/views/html5page/details.html?",string];
-    NSString *new_url=[string2 stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    
-    
+   new_url=[string2 stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+
     //读取微信授权plist文件
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *path = [paths objectAtIndexCheck:0];
@@ -2286,12 +2306,8 @@ StreetsnapInfo *publishInfo = nil;
             NSData *targetImageData = UIImageJPEGRepresentation(targetImage, 1);
             UIImage *finishImage = [UIImage imageWithData:targetImageData];
             [message setThumbImage:finishImage];
-            
-
             WXWebpageObject *webPageExt = [WXWebpageObject object];
-            
             webPageExt.webpageUrl = new_url;
-            
             message.mediaObject = webPageExt;
             req.message = message;
             
@@ -2312,56 +2328,79 @@ StreetsnapInfo *publishInfo = nil;
         [WXApi sendAuthReq:req viewController:self delegate:self];
     }
 }
+
 //微信响应代理
-- (void)onResp:(BaseResp *)resp {
-    NSString *string=[NSString stringWithFormat:@"streetsnapId=%@&place=%@&cityFlag=%@&current=%@&userId=%@&pagesize=%@&type=%@",_streetsnapId, [GetStreetsnapListInput shareInstance].place, [GetStreetsnapListInput shareInstance].cityFlag, [GetStreetsnapListInput shareInstance].current, [GetStreetsnapListInput shareInstance].userId, [GetStreetsnapListInput shareInstance].pagesize, [GetStreetsnapListInput shareInstance].type];
-    
-    NSString *string2=[NSString stringWithFormat:@"%@%@%@%@",@"http://",NET_BASE_URL,@"/maoxj/views/html5page/details.html?",string];
-    NSString *new_url=[string2 stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    
-    
-    if ([resp isKindOfClass:[SendMessageToWXResp class]]) {
+- (void)onResp:(BaseResp *)resp{
+
+     if ([resp isKindOfClass:[SendMessageToWXResp class]]) {
         SendMessageToWXResp *sendResp = (SendMessageToWXResp *)resp;
         if (sendResp.errCode == WXSuccess) { //分享成功
-            [CustomUtil showToastWithText:@"分享成功" view:kWindow];
-        }
-        else {
+            //增加积分
+            [CustomUtil share];
+        } else {
             //[CustomUtil showToastWithText:@"分享失败" view:kWindow];
         }
-    }
-    else if ([resp isKindOfClass:[SendAuthResp class]]) {
+    } else if ([resp isKindOfClass:[SendAuthResp class]]) {
         SendAuthResp *authResp = (SendAuthResp *)resp;
         if (authResp.errCode == WXSuccess) {
             [TKWeixinLogin shareInstance].code = authResp.code;
-            //获取微信token、openId及用户信息
-            [[CustomUtil shareInstance] getWeixinToken:^{
-                //发送分享内容
-                SendMessageToWXReq *req = [[SendMessageToWXReq alloc] init];
-                req.bText = NO;
-                WXMediaMessage *message = [[WXMediaMessage alloc] init];
-                message.description = publishInfo.streetsnapContent;
-                message.title = [NSString stringWithFormat:@"%@%@", publishInfo.userName,SHARE_TITLE];
-                UIImage *orginalImage = [UIImage imageNamed:@"icon_80*80"];
-                UIImage *targetImage = [CustomUtil compressImageForWidth:orginalImage targetWidth:128];
-                NSData *targetImageData = UIImageJPEGRepresentation(targetImage, 1);
-                UIImage *finishImage = [UIImage imageWithData:targetImageData];
-                [message setThumbImage:finishImage];
-                
-                WXWebpageObject *webPageExt = [WXWebpageObject object];
-                webPageExt.webpageUrl = new_url;
-                message.mediaObject = webPageExt;
-                req.message = message;
-                
-                if (_isWeiXinShare) {
-                    req.scene = 0;          //发送至个人
-                } else {
-                    req.scene = 1;          //发送至朋友圈
-                }
-                [WXApi sendReq:req];
-            }];
-        }
-        else {
-            [CustomUtil showToastWithText:@"授权失败" view:kWindow];
+            if (YES == [CustomUtil shareInstance].shareFlag) {
+                //获取微信token、openId及用户信息
+                [[CustomUtil shareInstance] getWeixinToken:^{
+                    //发送分享内容
+                    __block BOOL weiXinFlagSelf = [CustomUtil shareInstance].personOrZone;
+                    [CustomUtil getInviteUserMessage:^(NSString *returnStr, NSString *shareUrl) {
+                        SendMessageToWXReq *req = [[SendMessageToWXReq alloc] init];
+                        if ([CustomUtil shareInstance].shareFlag) {
+                            req.bText = NO;
+                            WXMediaMessage *message = [[WXMediaMessage alloc] init];
+                            NSString *shareText;
+                            if (YES == [CustomUtil shareInstance].weixinInviteUser) {
+                                shareText = returnStr;
+                            } else {
+                                if ([CustomUtil CheckParam:[CustomUtil shareInstance].shareContent]) {
+                                    shareText = @"";
+                                } else {
+                                    shareText = [CustomUtil shareInstance].shareContent;
+                                }
+                            }
+                            message.description = publishInfo.streetsnapContent;;
+                            message.title = [NSString stringWithFormat:@"%@%@", publishInfo.userName,SHARE_TITLE];
+                            NSString *str=[NSString stringWithFormat:@"%@%@%@",@"http://",NET_BASE_URL,publishInfo.photo1];
+                            NSURL *url=[NSURL URLWithString:str];
+                            NSData *data=[NSData dataWithContentsOfURL:url];
+                            UIImage *orginalImage = [UIImage imageWithData:data];
+                            UIImage *targetImage = [CustomUtil compressImageForWidth:orginalImage targetWidth:128];
+                            NSData *targetImageData = UIImageJPEGRepresentation(targetImage, 1);
+                            UIImage *finishImage = [UIImage imageWithData:targetImageData];
+                            [message setThumbImage:finishImage];
+                            WXWebpageObject *webPageExt = [WXWebpageObject object];
+                            webPageExt.webpageUrl = new_url;
+                            message.mediaObject = webPageExt;
+                            req.message = message;
+                        } else {
+                            req.bText = YES;        //仅发送文本
+                            if ([CustomUtil shareInstance].weixinInviteUser) {
+                                req.text = returnStr;
+                            } else {
+                                if ([CustomUtil CheckParam:[CustomUtil shareInstance].shareContent]) {
+                                    req.text = @"";
+                                } else {
+                                    req.text = [CustomUtil shareInstance].shareContent;
+                                }
+                            }
+                        }
+                        if (YES == weiXinFlagSelf) {
+                            req.scene = 0;          //发送至个人
+                        } else {
+                            req.scene = 1;          //发送至朋友圈
+                        }
+                        [WXApi sendReq:req];
+                    }];
+                }];
+            }
+        } else {
+            //[CustomUtil showToastWithText:@"授权失败" view:kWindow];
         }
     }
 }

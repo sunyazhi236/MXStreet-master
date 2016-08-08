@@ -8,7 +8,7 @@
 
 #import "BaseViewController.h"
 
-@interface PublishViewController : BaseViewController<UITextViewDelegate>
+@interface PublishViewController : BaseViewController<UITextViewDelegate,TencentSessionDelegate, WXApiDelegate>
 
 
 @property (weak, nonatomic) IBOutlet UIButton *publishBtn;                //发布按钮

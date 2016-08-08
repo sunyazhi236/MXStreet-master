@@ -8,7 +8,7 @@
 
 #import "BaseViewController.h"
 
-@interface StreetPhotoDetailViewController : BaseViewController<UITableViewDelegate, UITableViewDataSource, UITextViewDelegate, UIScrollViewDelegate, UserImageViewClickProtocol, DeleteCommentBtnClickDelegate>
+@interface StreetPhotoDetailViewController : BaseViewController<UITableViewDelegate, UITableViewDataSource, UITextViewDelegate, UIScrollViewDelegate, UserImageViewClickProtocol, DeleteCommentBtnClickDelegate, WXApiDelegate,WeiboSDKDelegate>
 
 @property (strong, nonatomic) IBOutlet UITableView *detailTableView;  //详情TableView
 @property (strong, nonatomic) IBOutlet UITableViewCell *firstCell;    //首行Cell
