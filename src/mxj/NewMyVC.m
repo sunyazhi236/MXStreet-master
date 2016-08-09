@@ -39,7 +39,8 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     [self.navigationController setNavigationBarHidden:YES];
-    [self reloadProxy];
+    [self reloadProxy]; //关注 粉丝 收藏图片
+   [self reSignTime];//我的连续签到天数
 }
 
 -(void)viewDidLoad{
@@ -63,8 +64,6 @@
     [rightButton setImage:[UIImage imageNamed:@"icon.png"] forState:UIControlStateNormal];
     [topView addSubview:rightButton];
     [rightButton addTarget:self action:@selector(searchFriend) forControlEvents:UIControlEventTouchUpInside];
-    [self reSignTime];
-
 }
 
 -(void)initView{
@@ -115,10 +114,11 @@
 }
 
 -(void)reSignTime{
-    NSMutableDictionary *dict = [CustomUtil modelToDictionary:[GetUserInfoInput shareInstance]];
+//    NSMutableDictionary *dict = [CustomUtil modelToDictionary:[GetUserInfoInput shareInstance]];
+        NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:@{@"userId":[LoginModel shareInstance].userId}];
     [[NetInterface shareInstance] requestNetWork:@"maoxj/signIn/cumulativeSignTime" param:dict successBlock:^(NSDictionary *responseDict) {
         if ([[responseDict objectForKey:@"code"] integerValue] == 1) {
-            [LoginModel shareInstance].loginDays = [responseDict objectForKey:@"code"];
+            [LoginModel shareInstance].loginDays = [responseDict objectForKey:@"days"];
         }
     } failedBlock:^(NSError *err) {
     }];

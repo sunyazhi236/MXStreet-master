@@ -62,8 +62,9 @@
         _loginDayLabel = [[UILabel alloc] initWithFrame:CGRectMake(_userNameLabel.frame.origin.x + _userNameLabel.frame.size.width + 10, 15, 100, 30)];
 //        [LoginModel shareInstance].loginDays = [NSString stringWithFormat:@"%d", [[LoginModel shareInstance].loginDays intValue]];
         _loginDayLabel.text = [NSString stringWithFormat:@"已连续签到%@天", [LoginModel shareInstance].loginDays];
-        if ([[LoginModel shareInstance].loginDays intValue] == 1) {
+        if ([[LoginModel shareInstance].loginDays intValue] == 1||[[LoginModel shareInstance].loginDays intValue] == 0) {
             _loginDayLabel.text = [NSString stringWithFormat:@"连续签到%@天", [LoginModel shareInstance].loginDays];
+         
         }
         _loginDayLabel.textColor = [UIColor grayColor];
         _loginDayLabel.font = [UIFont systemFontOfSize:13.0f];
