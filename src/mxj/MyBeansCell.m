@@ -33,7 +33,7 @@
     
     UILabel *dayLabel = (UILabel *)[self.contentView viewWithTag:1000];
     if (!dayLabel) {
-        dayLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 10, 35, 14)];
+        dayLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 10, 40, 14)];
     }
     dayLabel.tag = 1000;
     dayLabel.text = itemData.day;

@@ -79,14 +79,14 @@
     //添加上拉加载更多
     __weak MyBeansViewController *blockSelf = self;
     __block int currentPageNumSelf = currentPageNum;
-    __block NSMutableArray *dataSelf = _dataArray;
+//    __block NSMutableArray *dataSelf = _dataArray;
     //下拉刷新
     [_tableView addPullToRefreshWithActionHandler:^{
         //使用GCD开启一个线程，使圈圈转2秒
         int64_t delayInSeconds = 1.0;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            [dataSelf removeAllObjects];
+//            [dataSelf removeAllObjects];
             [blockSelf reloadData:1 block:^{
                 currentPageNumSelf = 1;
                 [blockSelf.tableView.pullToRefreshView stopAnimating];
@@ -106,7 +106,7 @@
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
             currentPageNumSelf++;
-            [blockSelf reloadData:currentPageNumSelf block:^{
+            [blockSelf reloadData2:currentPageNumSelf block:^{
                 [blockSelf.tableView.infiniteScrollingView stopAnimating];
             }];
         });
@@ -116,8 +116,42 @@
     [_tableView triggerPullToRefresh];
 }
 
-//刷新数据
+//刷新数据 下拉刷新
 -(void)reloadData:(int)current block:(void(^)())block
+{
+    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:0];
+    [dict setValue:[LoginModel shareInstance].userId forKey:@"userId"];
+    [dict setValue:[NSString stringWithFormat:@"%d", current] forKey:@"index"];
+    [dict setValue:@20 forKey:@"pageSize"];
+    
+    /**
+     *  请求我的毛豆接口
+     */
+    //    [CustomUtil showLoading:@""];
+    [[NetInterface shareInstance] requestNetWork:@"maoxj/mxCoin/getmxCoinList" param:dict successBlock:^(NSDictionary *responseDict) {
+        NSLog(@"getmxCoinList：%@",responseDict);
+        [_dataArray removeAllObjects];
+        if ([[responseDict objectForKey:@"code"] integerValue] == 1 ) {
+            _beansLabel.text = [responseDict objectForKey:@"mxAccountSum"] ? [responseDict objectForKey:@"mxAccountSum"] : @"0";
+            
+            for (NSDictionary *dic in [responseDict objectForKey:@"mxCoinFlowingList"]) {
+                MyBeansModel *model = [[MyBeansModel alloc] initWithDictionary:dic];
+                [_dataArray addObject:model];
+            }
+            [self.tableView reloadData];
+        }
+        else {
+            //            [CustomUtil showToast:@"加载数据失败" view:self.view];
+        }
+        block();
+    }failedBlock:^(NSError *err) {
+        [CustomUtil showToast:@"网络不给力，请稍后重试" view:self.view];
+        block();
+    }];
+}
+
+//刷新数据 上拉加载
+-(void)reloadData2:(int)current block:(void(^)())block
 {
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:0];
     [dict setValue:[LoginModel shareInstance].userId forKey:@"userId"];
@@ -130,10 +164,7 @@
 //    [CustomUtil showLoading:@""];
     [[NetInterface shareInstance] requestNetWork:@"maoxj/mxCoin/getmxCoinList" param:dict successBlock:^(NSDictionary *responseDict) {
         NSLog(@"getmxCoinList：%@",responseDict);
-        
         if ([[responseDict objectForKey:@"code"] integerValue] == 1 ) {
-            _beansLabel.text = [responseDict objectForKey:@"mxAccountSum"] ? [responseDict objectForKey:@"mxAccountSum"] : @"0";
-            
             for (NSDictionary *dic in [responseDict objectForKey:@"mxCoinFlowingList"]) {
                 MyBeansModel *model = [[MyBeansModel alloc] initWithDictionary:dic];
                 [_dataArray addObject:model];
