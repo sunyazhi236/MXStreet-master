@@ -439,8 +439,8 @@
     
     [_signBackView setHidden:NO];
     
-    //两秒后隐藏
-    double delayInSeconds = 2.0;
+    //三秒后隐藏
+    double delayInSeconds = 3.0;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
         [self hideSignBackView];

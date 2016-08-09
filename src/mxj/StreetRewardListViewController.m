@@ -97,20 +97,20 @@
     _tableView.backgroundColor = [UIColor colorWithHexString:@"#f3f3f3"];
     _tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 10)];
     
-    currentPageNum = 0; //默认页码从0开始
+    currentPageNum = 1; //默认页码从0开始
     //添加上拉加载更多
     __weak StreetRewardListViewController *blockSelf = self;
     __block int currentPageNumSelf = currentPageNum;
-    __block NSMutableArray *dataSelf = _listArray;
+//    __block NSMutableArray *dataSelf = _listArray;
     //下拉刷新
     [_tableView addPullToRefreshWithActionHandler:^{
         //使用GCD开启一个线程，使圈圈转2秒
         int64_t delayInSeconds = 1.0;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            [dataSelf removeAllObjects];
+//            [dataSelf removeAllObjects];
             [blockSelf reloadData:0 block:^{
-                currentPageNumSelf = 0;
+                currentPageNumSelf = 1;
                 [blockSelf.tableView.pullToRefreshView stopAnimating];
                 
                 blockSelf.tableView.contentOffset = CGPointMake(0, 0);
@@ -128,7 +128,7 @@
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
             currentPageNumSelf++;
-            [blockSelf reloadData:currentPageNumSelf block:^{
+            [blockSelf reloadData2:currentPageNumSelf block:^{
                 [blockSelf.tableView.infiniteScrollingView stopAnimating];
             }];
         });
@@ -137,9 +137,36 @@
     //刷新数据
     [_tableView triggerPullToRefresh];
 }
-
-//刷新数据
+//刷新数据 下拉刷新
 -(void)reloadData:(int)current block:(void(^)())block
+{
+    [GetStreetsnapDetailInput shareInstance].streetsnapId = _streetsnapId;
+    [GetStreetsnapDetailInput shareInstance].userId = [LoginModel shareInstance].userId;
+    NSMutableDictionary *dict = [CustomUtil modelToDictionary:[GetStreetsnapDetailInput shareInstance]];
+    [dict setValue:[NSString stringWithFormat:@"%d",current] forKey:@"index"];
+    [dict setValue:@20 forKey:@"pageSize"];
+    [CustomUtil showLoading:@""];
+    [[NetInterface shareInstance] requestNetWork:@"maoxj/mxCoin/getRewardList" param:dict successBlock:^(NSDictionary *responseDict) {
+        block();
+        [_listArray removeAllObjects];
+        NSLog(@"responseDict:%@",responseDict);
+        if ([responseDict objectForKey:@"list"] && [[[responseDict objectForKey:@"list"] objectForKey:@"info"] count] > 0) {
+            for (NSDictionary *dict in [[responseDict objectForKey:@"list"] objectForKey:@"info"]) {
+                RewardInfo *info = [[RewardInfo alloc] initWithDict:dict];
+                [_listArray addObject:info];
+            }
+            [_tableView reloadData];
+        }
+        else {
+            //            [CustomUtil showToast:@"获取失败" view:self.view];
+        }
+    } failedBlock:^(NSError *err) {
+        block();
+    }];
+}
+
+//刷新数据 上拉加载
+-(void)reloadData2:(int)current block:(void(^)())block
 {
     [GetStreetsnapDetailInput shareInstance].streetsnapId = _streetsnapId;
     [GetStreetsnapDetailInput shareInstance].userId = [LoginModel shareInstance].userId;
