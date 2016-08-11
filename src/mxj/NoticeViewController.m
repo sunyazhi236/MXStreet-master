@@ -70,7 +70,13 @@
         });
     }];
 }
-
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:NO];
+    //刷新列表
+    [_noticeTableView triggerPullToRefresh];
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -140,7 +146,10 @@
     
     return noticeTableCell;
 }
-
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    NoticeTableCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    [cell setBackgroundColor:[UIColor whiteColor]];
+}
 #pragma mark -按钮点击事件处理
 //右上角清空按钮点击事件
 -(void)clearBtnClick

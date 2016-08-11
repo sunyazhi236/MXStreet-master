@@ -146,6 +146,10 @@
     if (nil == [data objectAtIndexCheck:indexPath.row]) {
         return;
     }
+
+    CommentTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    [cell setBackgroundColor:[UIColor whiteColor]];
+    
     //进入街拍详情
     StreetPhotoDetailViewController *viewCtrl = [[StreetPhotoDetailViewController alloc] initWithNibName:@"StreetPhotoDetailViewController" bundle:nil];
     GetCommentListInfo *commentListInfo = [[GetCommentListInfo alloc] initWithDict:[data objectAtIndexCheck:indexPath.row]];

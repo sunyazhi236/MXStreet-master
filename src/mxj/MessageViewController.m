@@ -59,6 +59,7 @@
 //    self.messageTableView.delegate = self;
 //    self.messageTableView.dataSource = self;
     [self initView];
+
 }
 
 - (void)initView
@@ -112,6 +113,11 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+//    [_privateMessageViewCtrl viewWillAppear:YES];
+//    [_commentViewCtrl viewWillAppear:YES];
+//    [_encourageMeViewCtrl viewWillAppear:YES];
+//    [_noticeViewCtrl viewWillAppear:YES];
+    
     [self.navigationController setNavigationBarHidden:YES];
 #ifdef OPEN_NET_INTERFACE
     [GetUnreadNumInput shareInstance].userId = [LoginModel shareInstance].userId;
@@ -195,21 +201,25 @@
     
     if (btn.tag == BUTTON_TAG) {
         // 私信
+        [_privateMessageViewCtrl viewWillAppear:YES];
         [_backView addSubview:self.privateMessageViewCtrl.view];
         self.privateMessageViewCtrl.view.frame = CGRectMake(0, 0, SCREEN_WIDTH, GetHeight(_backView));
     }
     else if (btn.tag == BUTTON_TAG + 1) {
         // 评论
+        [_commentViewCtrl viewWillAppear:YES];
         [_backView addSubview:self.commentViewCtrl.view];
         self.commentViewCtrl.view.frame = CGRectMake(0, 0, SCREEN_WIDTH, GetHeight(_backView));
     }
     else if (btn.tag == BUTTON_TAG + 2) {
         // 赞赏
+        [_encourageMeViewCtrl viewWillAppear:YES];
         [_backView addSubview:self.encourageMeViewCtrl.view];
         self.encourageMeViewCtrl.view.frame = CGRectMake(0, 0, SCREEN_WIDTH, GetHeight(_backView));
     }
     else if (btn.tag == BUTTON_TAG + 3) {
         // 通知
+        [_noticeViewCtrl viewWillAppear:YES];
         [_backView addSubview:self.noticeViewCtrl.view];
         self.noticeViewCtrl.view.frame = CGRectMake(0, 0, SCREEN_WIDTH, GetHeight(_backView));
     }

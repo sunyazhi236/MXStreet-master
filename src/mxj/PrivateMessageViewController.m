@@ -128,6 +128,8 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    PrivateMessageTableCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    [cell setBackgroundColor:[UIColor whiteColor]];
 #ifdef OPEN_NET_INTERFACE
     //取得私信内容
     [GetMessageInput shareInstance].pagesize = @"10";

@@ -123,6 +123,8 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    EncourageMeTableCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    [cell setBackgroundColor:[UIColor whiteColor]];
     if (nil == [data objectAtIndexCheck:indexPath.row]) {
         return;
     }
