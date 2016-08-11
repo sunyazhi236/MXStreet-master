@@ -54,7 +54,7 @@
         int64_t delayInSeconds = 1.0;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            [dataSelf removeAllObjects];
+//            [dataSelf removeAllObjects];
             [blockSelf reloadData:1 block:^{
                 currentPageNumSelf = 1;
                 [blockSelf.commentTableView.pullToRefreshView stopAnimating];
@@ -185,6 +185,9 @@
     [GetCommentListInput shareInstance].userId = [LoginModel shareInstance].userId;
     NSMutableDictionary *dict = [CustomUtil modelToDictionary:[GetCommentListInput shareInstance]];
     [[NetInterface shareInstance] getCommentList:@"getCommentList" param:dict successBlock:^(NSDictionary *responseDict) {
+        if (pageNum==1) {
+            [data removeAllObjects];
+        }
         _isLoading = NO;
         GetCommentList *commentListData = [GetCommentList modelWithDict:responseDict];
         if (RETURN_SUCCESS(commentListData.status)) {
