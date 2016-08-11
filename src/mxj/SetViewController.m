@@ -310,6 +310,33 @@
                 if (!result) {
                     [CustomUtil showToastWithText:[error localizedDescription] view:kWindow];
                 }
+            }//删除qq自动登录的用户信息
+            NSString *userInfoPath1 = [path stringByAppendingPathComponent:@"TKQQLogin.plist"];
+            NSFileManager *fileManager1 = [[NSFileManager alloc] init];
+            if ([fileManager1 fileExistsAtPath:userInfoPath1]) {
+                NSError *error1;
+                BOOL result1 = [fileManager1 removeItemAtPath:userInfoPath1 error:&error1];
+                if (!result1) {
+                    [CustomUtil showToastWithText:[error1 localizedDescription] view:kWindow];
+                }
+            }//删除微信自动登录的用户信息
+            NSString *userInfoPath2 = [path stringByAppendingPathComponent:@"TKWeixinLogin.plist"];
+            NSFileManager *fileManager2 = [[NSFileManager alloc] init];
+            if ([fileManager2 fileExistsAtPath:userInfoPath2]) {
+                NSError *error2;
+                BOOL result2 = [fileManager2 removeItemAtPath:userInfoPath2 error:&error2];
+                if (!result2) {
+                    [CustomUtil showToastWithText:[error2 localizedDescription] view:kWindow];
+                }
+            }//删除新浪微博自动登录的用户信息
+            NSString *userInfoPath3 = [path stringByAppendingPathComponent:@"TKWeiboLogin.plist"];
+            NSFileManager *fileManager3 = [[NSFileManager alloc] init];
+            if ([fileManager3 fileExistsAtPath:userInfoPath3]) {
+                NSError *error3;
+                BOOL result3 = [fileManager3 removeItemAtPath:userInfoPath3 error:&error3];
+                if (!result3) {
+                    [CustomUtil showToastWithText:[error3 localizedDescription] view:kWindow];
+                }
             }
             registerPageIsExist = YES;
             [self.navigationController popToViewController:viewCtrl animated:YES];

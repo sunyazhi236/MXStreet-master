@@ -263,12 +263,12 @@
 
 //登录按钮点击事件
 - (IBAction)loginBtnClick:(id)sender {
-    if (![CustomUtil CheckParam:[TKLoginAccount shareInstance].phoneNum]) {
-        _userNameTextField.text = [TKLoginAccount shareInstance].phoneNum;
-    }
-    if (![CustomUtil CheckParam:[TKLoginAccount shareInstance].password]) {
-        _passwordTextField.text = [TKLoginAccount shareInstance].password;
-    }
+//    if (![CustomUtil CheckParam:[TKLoginAccount shareInstance].phoneNum]) {
+//        _userNameTextField.text = [TKLoginAccount shareInstance].phoneNum;
+//    }
+//    if (![CustomUtil CheckParam:[TKLoginAccount shareInstance].password]) {
+//        _passwordTextField.text = [TKLoginAccount shareInstance].password;
+//    }
 #ifdef PACKAGEFORTEST
 #else
     //检查手机号是否为空
