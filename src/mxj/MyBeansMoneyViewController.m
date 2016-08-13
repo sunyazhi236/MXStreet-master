@@ -11,7 +11,7 @@
 
 #define HEADVIEWHEIGH 55
 
-@interface MyBeansMoneyViewController() <UITableViewDelegate, UITableViewDataSource>
+@interface MyBeansMoneyViewController() <UITableViewDelegate, UITableViewDataSource,UITextFieldDelegate>
 {
     NSMutableArray *data;  //数据
     
@@ -25,12 +25,12 @@
 @property (nonatomic, strong) UILabel           *beansLabel;
 @property (nonatomic, strong) UILabel           *moneyLabel;
 @property (nonatomic, strong) UIView            *rmbView;
-@property (nonatomic, strong) UILabel           *rmbLabel;
+@property (nonatomic, strong) UITextField        *rmbLabel;
 @property (nonatomic, strong) UILabel           *wechatLabel;
 @property (nonatomic, strong) UIButton          *redBagBtn;
 @property (nonatomic, strong) UITableView       *tableView;
 @property (nonatomic, strong) NSMutableArray    *dataArray;
-
+@property(nonatomic,assign) BOOL isHaveDian;
 @end
 
 @implementation MyBeansMoneyViewController
@@ -133,6 +133,12 @@
     
     //刷新数据
     [_tableView triggerPullToRefresh];
+    //隐藏键盘
+    UITapGestureRecognizer *guesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(backImageClick)];
+    [self.view addGestureRecognizer:guesture];
+}
+-(void)backImageClick{
+    [_rmbLabel resignFirstResponder];
 }
 
 //刷新数据
@@ -229,13 +235,74 @@
         rmbTitle.font = [UIFont systemFontOfSize:15.0f];
         [_rmbView addSubview:rmbTitle];
         
-        _rmbLabel = [[UILabel alloc] initWithFrame:CGRectMake(75, 0, _rmbView.frame.size.width - 85, 45)];
-        _rmbLabel.text = [NSString stringWithFormat:@"%.2f元",_sum/100.0];
+        _rmbLabel = [[UITextField alloc] initWithFrame:CGRectMake(75, 0, _rmbView.frame.size.width - 85, 45)];
+        _rmbLabel.placeholder = [NSString stringWithFormat:@"%.2f元",_sum/100.0];
+        _rmbLabel.delegate=self;
         _rmbLabel.font = [UIFont systemFontOfSize:15.0f];
         _rmbLabel.textAlignment = NSTextAlignmentLeft;
+        _rmbLabel.keyboardType=UIKeyboardTypeDecimalPad;
         [_rmbView addSubview:_rmbLabel];
     }
     return _rmbView;
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
+    if ([textField.text rangeOfString:@"."].location == NSNotFound) {
+        _isHaveDian = NO;
+    }
+    if ([string length] > 0) {
+        unichar single = [string characterAtIndex:0];//当前输入的字符
+        if ((single >= '0' && single <= '9') || single == '.') {//数据格式正确
+            //首字母不能为小数点
+            if([textField.text length] == 0){
+                if(single == '.') {
+                    [self showError:@"亲，第一个数字不能为小数点"];
+                    [textField.text stringByReplacingCharactersInRange:range withString:@""];
+                    return NO;
+                }          }
+            //输入的字符是否是小数点
+            if (single == '.') {
+                if(!_isHaveDian)//text中还没有小数点
+                {
+                    _isHaveDian = YES;
+                    return YES;
+                    
+                }else{
+                    [self showError:@"亲，您已经输入过小数点了"];
+                    [textField.text stringByReplacingCharactersInRange:range withString:@""];
+                    return NO;
+                }
+            }else{
+                if (_isHaveDian) {//存在小数点
+                    
+                    //判断小数点的位数
+                    NSRange ran = [textField.text rangeOfString:@"."];
+                    if (range.location - ran.location <= 2) {
+                        return YES;
+                    }else{
+                        [self showError:@"亲，您最多输入两位小数"];
+                        return NO;
+                    }
+                }else{
+                    return YES;
+                }
+            }
+        }else{//输入的数据格式不正确
+            [self showError:@"亲，您输入的格式不正确"];
+            [textField.text stringByReplacingCharactersInRange:range withString:@""];
+            return NO;
+        }
+    }
+    else
+    {
+        return YES;
+    }
+}
+
+
+- (void)showError:(NSString *)errorString
+{
+    NSLog(@"asfda");
 }
 
 -(UILabel *)wechatLabel{
@@ -277,13 +344,16 @@
  */
 - (void)withdraw:(id)sender
 {
+    if ([_rmbLabel.text floatValue]>_sum/100.f) {
+          [CustomUtil showToast:@"提现余额大于总余额！" view:self.view];
+          return;
+    }
     if (_sum < 10 * 100) {
         [CustomUtil showToast:@"满10元才可提现哦！" view:self.view];
         return;
     }
  
-
-    WithdrawCashViewController *wdcVC = [[WithdrawCashViewController alloc] initWithSum:_sum];
+    WithdrawCashViewController *wdcVC = [[WithdrawCashViewController alloc] initWithSum:[_rmbLabel.text floatValue]*100];
     __weak __typeof(&*self)weakSelf = self;
     wdcVC.aBlock = ^(){
         __strong __typeof(weakSelf)strongSelf = weakSelf;
