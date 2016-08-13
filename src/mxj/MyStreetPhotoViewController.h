@@ -74,6 +74,7 @@
 @property (nonatomic,strong) UILabel                *userName;
 @property (nonatomic,strong) UILabel                *levelLabel;
 @property (nonatomic,strong) UILabel                *countryLabel;
+@property (nonatomic,strong) UIImageView            *personSex;  //个人资料的性别
 @property (nonatomic,strong) UILabel                *personSignLabel;
 @property (nonatomic,strong) UIImageView            *numberView;
 @property (nonatomic,strong) UILabel                *doorNum;

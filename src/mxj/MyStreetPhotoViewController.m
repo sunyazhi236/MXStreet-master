@@ -262,7 +262,11 @@
         [_numberView addSubview:_doorNum];
         [_headView addSubview:_numberView];
         
-        _countryLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, GetY(_numberView) - 30, SCREENHEIGHT - 20, 30)];
+        _personSex =[[UIImageView alloc]initWithFrame:CGRectMake(20,  GetY(_numberView) - 23, 15, 15)];
+        _personSex.image=[UIImage imageNamed:@""];
+        [_headView addSubview:_personSex];
+        
+        _countryLabel = [[UILabel alloc] initWithFrame:CGRectMake(40, GetY(_numberView) - 30, SCREENHEIGHT - 20, 30)];
         _countryLabel.font = [UIFont systemFontOfSize:13.0f];
         _countryLabel.textColor = [UIColor whiteColor];
         _countryLabel.text = @"";
@@ -338,6 +342,11 @@
             _bannerImageView.imageURL = [CustomUtil getPhotoURL:userInfo.backgroundImage];
             _levelLabel.text = [NSString stringWithFormat:@"LV%@", userInfo.userLevel];
             _userName.text = userInfo.userName;
+            if ([userInfo.sex isEqualToString:@"男"]) {
+                _personSex.image=[UIImage imageNamed:@"nan"];
+            }if ([userInfo.sex isEqualToString:@"女"]) {
+                _personSex.image=[UIImage imageNamed:@"nv"];
+            }
             CGSize userSize = [_userName.text sizeWithFont:[UIFont boldSystemFontOfSize:18.0f] maxSize:CGSizeMake(SCREENWIDTH - 110,15)];
             _userName.frame = CGRectMake(_userName.frame.origin.x, _userName.frame.origin.y, userSize.width, 40);
             _levimg.frame = CGRectMake(_userName.frame.origin.x + _userName.frame.size.width + 5, _userName.frame.origin.y + (40-17) / 2, 33, 17);
