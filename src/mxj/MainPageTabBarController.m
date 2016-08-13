@@ -404,9 +404,9 @@
     }
     NSMutableAttributedString *mdstr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@毛豆", mdnum]];
     [mdstr addAttribute:NSForegroundColorAttributeName value:[UIColor whiteColor] range:NSMakeRange(0,mdnum.length)];
-    [mdstr addAttribute:NSForegroundColorAttributeName value:[UIColor whiteColor] range:NSMakeRange(num.length,2)];
+    [mdstr addAttribute:NSForegroundColorAttributeName value:[UIColor whiteColor] range:NSMakeRange(mdnum.length,2)];
     [mdstr addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Helvetica" size:30.0] range:NSMakeRange(0,mdnum.length)];
-    [mdstr addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"HelveticaNeue-Bold" size:15.0] range:NSMakeRange(num.length,2)];
+    [mdstr addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"HelveticaNeue-Bold" size:15.0] range:NSMakeRange(mdnum.length,2)];
     UILabel *mdLabel = (UILabel *)[_signBackView viewWithTag:2007];
     if (!mdLabel) {
         mdLabel = [[UILabel alloc] initWithFrame:CGRectMake(3, 0, mdk.size.width/2, mdk.size.height/2)];
