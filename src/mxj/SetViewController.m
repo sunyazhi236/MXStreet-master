@@ -14,6 +14,8 @@
 #import "MyLevelViewController.h"
 #import "PersonDocViewController.h"
 #import "BlackListViewController.h"
+#import "NoticeVCViewController.h"
+
 //#import "LoginViewController.h"
 #import "LoginVC.h"
 //#import "RegisterViewController.h"
@@ -194,6 +196,11 @@
         {
             BlackListViewController *blackListViewCtrl = [[BlackListViewController alloc] initWithNibName:@"BlackListViewController" bundle:nil];
             [self.navigationController pushViewController:blackListViewCtrl animated:YES];
+        }
+            break;
+        case 2:{ //消息通知
+            NoticeVCViewController *noticeVC=[[NoticeVCViewController alloc]init];
+            [self.navigationController pushViewController:noticeVC animated:YES];
         }
             break;
         case 3: //清除缓存

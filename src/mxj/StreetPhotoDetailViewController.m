@@ -117,7 +117,7 @@ StreetsnapInfo *publishInfo = nil;
 
     _zanView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, height)];
     _zanView.backgroundColor = [UIColor whiteColor];
-    NSArray *array = @[@"赞", @"打赏", @"分享", @"收藏"];
+//    NSArray *array = @[@"赞", @"打赏", @"分享", @"收藏"];
     NSArray *images = @[@"zan7-4.png", @"dashang7-4.png", @"share7-4.png", @"like7-4.png"];
     
     float width = SCREEN_WIDTH / 4;
@@ -130,12 +130,12 @@ StreetsnapInfo *publishInfo = nil;
     lineView2.backgroundColor = RGB(229, 229, 229, 1);
     [_zanView addSubview:lineView2];
 
-    for (int i = 0; i < array.count; i++) {
+    for (int i = 0; i < images.count; i++) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
         button.frame = CGRectMake(width * i, 0, width, height);
         button.titleLabel.font = FONT(11);
         [button setTitleColor:[UIColor colorWithHexString:@"#a3a3a3"] forState:UIControlStateNormal];
-        [button setTitle:array[i] forState:UIControlStateNormal];
+//        [button setTitle:array[i] forState:UIControlStateNormal];
         [button setImage:[UIImage imageNamed:images[i]] forState:UIControlStateNormal];
         [button setImageEdgeInsets:UIEdgeInsetsMake(0, -6, 0, 6)];
         button.tag = i ;
@@ -785,7 +785,7 @@ StreetsnapInfo *publishInfo = nil;
             if (_zanUserArray.count > 0) {
                 UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dianzancount"]];
                 imageView.tag = 4001;
-                imageView.frame = CGRectMake(USER_IMAGE_OFFSET - 1, tmpY + ZANUSR_Y_OFFSET - 1, ZANUSR_HEIGHT + 2, ZANUSR_HEIGHT + 2);
+                imageView.frame = CGRectMake(USER_IMAGE_OFFSET - 1, tmpY  + ZANUSR_HEIGHT + 2 * ZANUSR_Y_OFFSET, ZANUSR_HEIGHT + 2, ZANUSR_HEIGHT + 2);
                 imageView.userInteractionEnabled = YES;
                 imageView.layer.cornerRadius = imageView.frame.size.width / 2;
                 imageView.layer.masksToBounds = YES;
@@ -794,7 +794,7 @@ StreetsnapInfo *publishInfo = nil;
                 
                 NSInteger minX = MIN(3, _zanUserArray.count) + 1;
 
-                UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake((minX + 1) * USER_IMAGE_OFFSET + minX * ZANUSR_HEIGHT, tmpY + ZANUSR_Y_OFFSET, ZANUSR_HEIGHT, ZANUSR_HEIGHT)];
+                UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake((minX + 1) * USER_IMAGE_OFFSET + minX * ZANUSR_HEIGHT, tmpY  + ZANUSR_HEIGHT + 2 * ZANUSR_Y_OFFSET, ZANUSR_HEIGHT, ZANUSR_HEIGHT)];
                 label.layer.cornerRadius = label.frame.size.width / 2;
                 label.tag = 4002;
                 label.layer.masksToBounds = YES;
@@ -820,7 +820,7 @@ StreetsnapInfo *publishInfo = nil;
                         imageView.layer.masksToBounds = YES;
                         CGRect rect = imageView.frame;
                         rect.origin.x = (tmp+1) * USER_IMAGE_OFFSET + tmp * ZANUSR_HEIGHT;
-                        rect.origin.y = tmpY + ZANUSR_Y_OFFSET;
+                        rect.origin.y = tmpY  + ZANUSR_HEIGHT + 2 * ZANUSR_Y_OFFSET;
                         rect.size.width = ZANUSR_HEIGHT;
                         rect.size.height = ZANUSR_HEIGHT;
                         imageView.frame = rect;
@@ -862,7 +862,7 @@ StreetsnapInfo *publishInfo = nil;
             }
             if (_rewardUserArray.count > 0) {
                 UIImageView *imageView2 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"rewardcount"]];
-                imageView2.frame = CGRectMake(tmp_x + USER_IMAGE_OFFSET - 1, tmpY + ZANUSR_Y_OFFSET - 1, ZANUSR_HEIGHT + 2, ZANUSR_HEIGHT + 2);
+                imageView2.frame = CGRectMake(tmp_x + USER_IMAGE_OFFSET - 1, tmpY +  + ZANUSR_HEIGHT + 2 * ZANUSR_Y_OFFSET, ZANUSR_HEIGHT + 2, ZANUSR_HEIGHT + 2);
                 imageView2.tag = 4004;
                 imageView2.userInteractionEnabled = YES;
                 imageView2.layer.cornerRadius = imageView2.frame.size.width / 2;
@@ -871,7 +871,7 @@ StreetsnapInfo *publishInfo = nil;
                 [_secondCell.contentView addSubview:imageView2];
 
                 NSInteger minX = MIN(3, _rewardUserArray.count) + 1;
-                UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tmp_x + (minX + 1) * USER_IMAGE_OFFSET + minX * ZANUSR_HEIGHT, tmpY + ZANUSR_Y_OFFSET, ZANUSR_HEIGHT, ZANUSR_HEIGHT)];
+                UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tmp_x + (minX + 1) * USER_IMAGE_OFFSET + minX * ZANUSR_HEIGHT, tmpY  + ZANUSR_HEIGHT + 2 * ZANUSR_Y_OFFSET, ZANUSR_HEIGHT, ZANUSR_HEIGHT)];
                 label.userInteractionEnabled = YES;
                 label.tag = 4005;
                 label.layer.cornerRadius = label.frame.size.width / 2;
@@ -896,7 +896,7 @@ StreetsnapInfo *publishInfo = nil;
                         EGOImageView *imageView = [_rewardUserArray objectAtIndexCheck:j];
                         CGRect rect = imageView.frame;
                         rect.origin.x = tmp_x + (tmp+1) * USER_IMAGE_OFFSET + tmp * ZANUSR_HEIGHT;
-                        rect.origin.y = tmpY + ZANUSR_Y_OFFSET;
+                        rect.origin.y = tmpY  + ZANUSR_HEIGHT + 2 * ZANUSR_Y_OFFSET;
                         rect.size.width = ZANUSR_HEIGHT;
                         rect.size.height = ZANUSR_HEIGHT;
                         imageView.frame = rect;
@@ -912,12 +912,12 @@ StreetsnapInfo *publishInfo = nil;
             
             //用户头像首行y坐标
             float zanViewY = tmpY;
-            if (_praiseInfoArray.count > 0 || _rewardInfoArray.count > 0) {
-                zanViewY = zanViewY + ZANUSR_HEIGHT + 2 * ZANUSR_Y_OFFSET;
-            }
-            else {
-                zanViewY = zanViewY + ZANUSR_Y_OFFSET;
-            }
+//            if (_praiseInfoArray.count > 0 || _rewardInfoArray.count > 0) {
+//                zanViewY = zanViewY + ZANUSR_HEIGHT + 2 * ZANUSR_Y_OFFSET;
+//            }
+//            else {
+//                zanViewY = zanViewY + ZANUSR_Y_OFFSET;
+//            }
             
             CGRect zanViewRect = _zanView.frame;
             if (_zanUserArray.count > 0) {

@@ -461,6 +461,8 @@
 		87F84F721C44D129001C8774 /* MyLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 87F84F711C44D129001C8774 /* MyLabel.m */; };
 		87FB1D271C3F9BE4006EF22E /* LogoutInput.m in Sources */ = {isa = PBXBuildFile; fileRef = 87FB1D261C3F9BE4006EF22E /* LogoutInput.m */; };
 		87FB1D2B1C3FDF1A006EF22E /* CacheService.m in Sources */ = {isa = PBXBuildFile; fileRef = 87FB1D2A1C3FDF1A006EF22E /* CacheService.m */; };
+		9E01F3BB1D62E8CF0054FBED /* NoticeVCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E01F3B91D62E8CF0054FBED /* NoticeVCViewController.m */; };
+		9E01F3BC1D62E8CF0054FBED /* NoticeVCViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9E01F3BA1D62E8CF0054FBED /* NoticeVCViewController.xib */; };
 		D400715E1D04715F00C48C90 /* RewardInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = D400715D1D04715F00C48C90 /* RewardInfo.m */; };
 		D4445D001CE2138400B85778 /* AMap.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D4445CFF1CE2138400B85778 /* AMap.bundle */; };
 		D4445D021CE2F84D00B85778 /* Bugly.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4445D011CE2F84D00B85778 /* Bugly.framework */; };
@@ -1301,6 +1303,9 @@
 		87FB1D261C3F9BE4006EF22E /* LogoutInput.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogoutInput.m; sourceTree = "<group>"; };
 		87FB1D291C3FDF1A006EF22E /* CacheService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CacheService.h; sourceTree = "<group>"; };
 		87FB1D2A1C3FDF1A006EF22E /* CacheService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CacheService.m; sourceTree = "<group>"; };
+		9E01F3B81D62E8CF0054FBED /* NoticeVCViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoticeVCViewController.h; sourceTree = "<group>"; };
+		9E01F3B91D62E8CF0054FBED /* NoticeVCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoticeVCViewController.m; sourceTree = "<group>"; };
+		9E01F3BA1D62E8CF0054FBED /* NoticeVCViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NoticeVCViewController.xib; sourceTree = "<group>"; };
 		D400715C1D04715F00C48C90 /* RewardInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RewardInfo.h; sourceTree = "<group>"; };
 		D400715D1D04715F00C48C90 /* RewardInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RewardInfo.m; sourceTree = "<group>"; };
 		D4445CFF1CE2138400B85778 /* AMap.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AMap.bundle; sourceTree = "<group>"; };
@@ -1793,6 +1798,7 @@
 				5D397CE61BFAF8910096EEE8 /* FeedBack */,
 				5D397CE01BFAF40F0096EEE8 /* Help */,
 				5D4EDB701BFA248C003BB1DE /* guanYuWoMen */,
+				9E01F3B71D62E7E70054FBED /* NoticeVC */,
 				5D4EDB6B1BF9CF30003BB1DE /* SetViewController.h */,
 				5D4EDB6C1BF9CF30003BB1DE /* SetViewController.m */,
 				5D4EDB6D1BF9CF30003BB1DE /* SetViewController.xib */,
@@ -4495,6 +4501,16 @@
 			name = Cache;
 			sourceTree = "<group>";
 		};
+		9E01F3B71D62E7E70054FBED /* NoticeVC */ = {
+			isa = PBXGroup;
+			children = (
+				9E01F3B81D62E8CF0054FBED /* NoticeVCViewController.h */,
+				9E01F3B91D62E8CF0054FBED /* NoticeVCViewController.m */,
+				9E01F3BA1D62E8CF0054FBED /* NoticeVCViewController.xib */,
+			);
+			name = NoticeVC;
+			sourceTree = "<group>";
+		};
 		D46D1D111D1EE7980042BD0F /* MJRefresh */ = {
 			isa = PBXGroup;
 			children = (
@@ -4757,6 +4773,7 @@
 				5D71B00D1BFE0628003DEC54 /* Data.json in Resources */,
 				5D6DD8F21BFCD4FA00EA3460 /* StreetPhotoViewController.xib in Resources */,
 				5D644CDB1BF8D858001F882F /* ConcernManTableViewCell.xib in Resources */,
+				9E01F3BC1D62E8CF0054FBED /* NoticeVCViewController.xib in Resources */,
 				5D6DD8CE1BFC9FC100EA3460 /* EditPhotoCell.xib in Resources */,
 				5D6DD8C21BFC8F9700EA3460 /* TakePhotosViewController.xib in Resources */,
 				5D9F34861BF2ED9A0015BAE2 /* OwnAreaViewController.xib in Resources */,
@@ -5196,6 +5213,7 @@
 				5DD0C70E1BF05C8B003D8243 /* RegisterViewController.m in Sources */,
 				871B7D381C16D6A400F83FC1 /* GetCityListInfo.m in Sources */,
 				5D71B02B1BFE0660003DEC54 /* SDWebImageManager.m in Sources */,
+				9E01F3BB1D62E8CF0054FBED /* NoticeVCViewController.m in Sources */,
 				D46D1D401D1EE7980042BD0F /* MJRefreshAutoFooter.m in Sources */,
 				87F4659D1C10829100934AAC /* AddStreetsnapTag.m in Sources */,
 			);
@@ -5265,7 +5283,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "a7cdbf18-83f4-473f-a216-f11d8ee0c092";
+				PROVISIONING_PROFILE = "62cafec8-905b-48da-beea-dde9ae1aba7e";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -5303,7 +5321,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PROVISIONING_PROFILE = "a7cdbf18-83f4-473f-a216-f11d8ee0c092";
+				PROVISIONING_PROFILE = "62cafec8-905b-48da-beea-dde9ae1aba7e";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
