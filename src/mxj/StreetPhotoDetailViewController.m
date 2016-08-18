@@ -137,11 +137,15 @@ StreetsnapInfo *publishInfo = nil;
         [button setTitleColor:[UIColor colorWithHexString:@"#a3a3a3"] forState:UIControlStateNormal];
 //        [button setTitle:array[i] forState:UIControlStateNormal];
         [button setImage:[UIImage imageNamed:images[i]] forState:UIControlStateNormal];
-        [button setImageEdgeInsets:UIEdgeInsetsMake(0, -6, 0, 6)];
+        [button setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
         button.tag = i ;
         button.selected = NO;
         [button addTarget:self action:@selector(customButtonClick:) forControlEvents:UIControlEventTouchUpInside];
         [_zanView addSubview:button];
+        
+        UIView *lineView=[[UIView alloc]initWithFrame:CGRectMake(width * i, 8, 0.5, height-16)];
+        lineView.backgroundColor=[UIColor lightGrayColor];
+        [_zanView addSubview:lineView];
         if (i == 0) {
             _zanBtn = button;
         }
