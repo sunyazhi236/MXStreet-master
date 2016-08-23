@@ -859,6 +859,7 @@
 - (void)fenSiBtnClick:(id)sender {
     MeFansViewController *meFansViewCtrl = [[MeFansViewController alloc] initWithNibName:@"MeFansViewController" bundle:nil];
     meFansViewCtrl.userId = self.userId;
+    meFansViewCtrl.sex = userInfo.sex;
     [self.navigationController pushViewController:meFansViewCtrl animated:YES];
 }
 
@@ -866,6 +867,7 @@
 - (void)guanZhuBtnClick:(id)sender {
     ConcernManViewController *concernManViewCtrl = [[ConcernManViewController alloc] initWithNibName:@"ConcernManViewController" bundle:nil];
     concernManViewCtrl.userId = self.userId;
+    concernManViewCtrl.sex = userInfo.sex;
     [self.navigationController pushViewController:concernManViewCtrl animated:YES];
 }
 

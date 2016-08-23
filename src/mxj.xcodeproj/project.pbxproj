@@ -463,6 +463,7 @@
 		87FB1D2B1C3FDF1A006EF22E /* CacheService.m in Sources */ = {isa = PBXBuildFile; fileRef = 87FB1D2A1C3FDF1A006EF22E /* CacheService.m */; };
 		9E01F3BB1D62E8CF0054FBED /* NoticeVCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E01F3B91D62E8CF0054FBED /* NoticeVCViewController.m */; };
 		9E01F3BC1D62E8CF0054FBED /* NoticeVCViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9E01F3BA1D62E8CF0054FBED /* NoticeVCViewController.xib */; };
+		9E2E99A21D67E6C800ED0071 /* iconNew.png in Resources */ = {isa = PBXBuildFile; fileRef = 9E2E99A11D67E6C800ED0071 /* iconNew.png */; };
 		D400715E1D04715F00C48C90 /* RewardInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = D400715D1D04715F00C48C90 /* RewardInfo.m */; };
 		D4445D001CE2138400B85778 /* AMap.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D4445CFF1CE2138400B85778 /* AMap.bundle */; };
 		D4445D021CE2F84D00B85778 /* Bugly.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4445D011CE2F84D00B85778 /* Bugly.framework */; };
@@ -1306,6 +1307,7 @@
 		9E01F3B81D62E8CF0054FBED /* NoticeVCViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoticeVCViewController.h; sourceTree = "<group>"; };
 		9E01F3B91D62E8CF0054FBED /* NoticeVCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoticeVCViewController.m; sourceTree = "<group>"; };
 		9E01F3BA1D62E8CF0054FBED /* NoticeVCViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NoticeVCViewController.xib; sourceTree = "<group>"; };
+		9E2E99A11D67E6C800ED0071 /* iconNew.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iconNew.png; sourceTree = "<group>"; };
 		D400715C1D04715F00C48C90 /* RewardInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RewardInfo.h; sourceTree = "<group>"; };
 		D400715D1D04715F00C48C90 /* RewardInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RewardInfo.m; sourceTree = "<group>"; };
 		D4445CFF1CE2138400B85778 /* AMap.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AMap.bundle; sourceTree = "<group>"; };
@@ -1465,6 +1467,7 @@
 			isa = PBXGroup;
 			children = (
 				0E67CCAE1CF979AA00AED07F /* dengjivc.png */,
+				9E2E99A11D67E6C800ED0071 /* iconNew.png */,
 				0E2A75151CF1BD0000409A0C /* icon.png */,
 				0E2A75161CF1BD0000409A0C /* mainview.png */,
 				0E2A75171CF1BD0000409A0C /* friends.png */,
@@ -4855,6 +4858,7 @@
 				5D397CFD1BFB36600096EEE8 /* PersonDocViewController.xib in Resources */,
 				0E658C421D0AB5D300D9F691 /* cash.png in Resources */,
 				5D71AFD51BFDA48C003DEC54 /* PhotoDetailViewController.xib in Resources */,
+				9E2E99A21D67E6C800ED0071 /* iconNew.png in Resources */,
 				87C2257C1C070EBC00AFDD85 /* MenuBtnCell.xib in Resources */,
 				0E2A75221CF1BD0000409A0C /* getmoney.png in Resources */,
 				5D397CE51BFAF42A0096EEE8 /* HelpViewController.xib in Resources */,

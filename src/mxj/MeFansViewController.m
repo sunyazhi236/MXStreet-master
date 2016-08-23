@@ -32,9 +32,12 @@
     
     if ([_userId isEqualToString:[LoginModel shareInstance].userId]) {
         [self.navigationItem setTitle:@"我的粉丝"];
-    } else {
-        [self.navigationItem setTitle:@"粉丝"];
+    }else if ([_sex isEqualToString:@"男"]) {
+        [self.navigationItem setTitle:@"他的粉丝"];
+    }else  {
+        [self.navigationItem setTitle:@"她的粉丝"];
     }
+    
     self.meFansTableView.delegate = self;
     self.meFansTableView.dataSource = self;
     

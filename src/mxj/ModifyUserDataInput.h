@@ -23,6 +23,7 @@
 @property(nonatomic, copy) NSString *birthday;   //生日
 @property(nonatomic, copy) NSString *userSign;   //用户签名
 @property(nonatomic, copy) NSString *pushMessage; //推送消息开关
+@property(nonatomic, copy) NSString *guanzhuMessage; //关注消息开关
 @property(nonatomic, copy) NSString *userSignFlag; //用户签名删除标识(0:未删除 1:删除)
 @property(nonatomic, copy) NSString *storeFlag;    //店铺删除标识(0:未删除 1:删除)
 

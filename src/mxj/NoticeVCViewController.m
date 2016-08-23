@@ -11,6 +11,7 @@
 @interface NoticeVCViewController ()
 {
     NSString *sixinFlag; //消息推送开关标记
+    NSString *guanzhuFlag;//关注推送开关标记
 }
 @end
 
@@ -20,11 +21,12 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     [self.navigationController setNavigationBarHidden:NO];
-    [self.navigationItem setTitle:@"通知"];
+    [self.navigationItem setTitle:@"新消息通知"];
     _tableView.delegate=self;
     _tableView.dataSource=self;
     
-    [self.sixinBtn addTarget:self action:@selector(sixinBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    [self.sixinBtn addTarget:self action:@selector(BtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    self.sixinBtn.tag=1001;
     sixinFlag = [LoginModel shareInstance].pushMessage;
     //调整推送按钮的状态
     if ([sixinFlag isEqualToString:@"1"]) {
@@ -32,34 +34,73 @@
     } else if([sixinFlag isEqualToString:@"0"]) {
         [self.sixinBtn setBackgroundImage:[UIImage imageNamed:@"off_12"] forState:UIControlStateNormal];
     }
+    
+    [self.guanzhuBtn addTarget:self action:@selector(BtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    self.guanzhuBtn.tag=1002;
+    guanzhuFlag = [LoginModel shareInstance].guanzhuMessage;
+    //调整推送按钮的状态
+    if ([guanzhuFlag isEqualToString:@"1"]) {
+        [self.guanzhuBtn setBackgroundImage:[UIImage imageNamed:@"on_12"] forState:UIControlStateNormal];
+    } else if([guanzhuFlag isEqualToString:@"0"]) {
+        [self.guanzhuBtn setBackgroundImage:[UIImage imageNamed:@"off_12"] forState:UIControlStateNormal];
+    }
+    NSLog(@"++++%@____%@",[LoginModel shareInstance].pushMessage,[LoginModel shareInstance].guanzhuMessage);
 }
 
 #pragma mark -按钮点击事件处理
 //消息推送按钮点击事件
--(void)sixinBtnClick{
-    if ([sixinFlag isEqualToString:@"1"]) {
-        sixinFlag = @"0";
-        [self.sixinBtn setBackgroundImage:[UIImage imageNamed:@"off_12"] forState:UIControlStateNormal];
-    } else if([sixinFlag isEqualToString:@"0"]) {
-        sixinFlag = @"1";
-        [self.sixinBtn setBackgroundImage:[UIImage imageNamed:@"on_12"] forState:UIControlStateNormal];
+-(void)BtnClick:(UIButton *)btn{
+    if (btn.tag==1001) {
+        if ([sixinFlag isEqualToString:@"1"]) {
+            sixinFlag = @"0";
+            [self.sixinBtn setBackgroundImage:[UIImage imageNamed:@"off_12"] forState:UIControlStateNormal];
+        } else if([sixinFlag isEqualToString:@"0"]) {
+            sixinFlag = @"1";
+            [self.sixinBtn setBackgroundImage:[UIImage imageNamed:@"on_12"] forState:UIControlStateNormal];
+        }
+        //调用接口更新数据
+        [ModifyUserDataInput shareInstance].userId = [LoginModel shareInstance].userId;
+        [ModifyUserDataInput shareInstance].pushMessage = sixinFlag;
+        [ModifyUserDataInput shareInstance].userSignFlag = @"0";
+        [ModifyUserDataInput shareInstance].storeFlag = @"0";
+        NSMutableDictionary *dict = [CustomUtil modelToDictionary:[ModifyUserDataInput shareInstance]];
+        [[NetInterface shareInstance] modifyUserData:@"modifyUserData" param:dict successBlock:^(NSDictionary *responseDict) {
+            ModifyUserData *returnData = [ModifyUserData modelWithDict:responseDict];
+                 NSLog(@"+++%@___%@",dict,responseDict);
+            if (RETURN_SUCCESS(returnData.status)) {
+                [LoginModel shareInstance].pushMessage = sixinFlag;
+            } else {
+                [CustomUtil showToastWithText:returnData.msg view:kWindow];
+            }
+        } failedBlock:^(NSError *err) {
+        }];
+    }
+    if (btn.tag==1002) {
+        if ([guanzhuFlag isEqualToString:@"1"]) {
+            guanzhuFlag = @"0";
+            [self.guanzhuBtn setBackgroundImage:[UIImage imageNamed:@"off_12"] forState:UIControlStateNormal];
+        } else if([guanzhuFlag isEqualToString:@"0"]) {
+            guanzhuFlag = @"1";
+            [self.guanzhuBtn setBackgroundImage:[UIImage imageNamed:@"on_12"] forState:UIControlStateNormal];
+        }
+        //调用接口更新数据
+        [ModifyUserDataInput shareInstance].userId = [LoginModel shareInstance].userId;
+        [ModifyUserDataInput shareInstance].guanzhuMessage = guanzhuFlag;
+        [ModifyUserDataInput shareInstance].userSignFlag = @"0";
+        [ModifyUserDataInput shareInstance].storeFlag = @"0";
+        NSMutableDictionary *dict = [CustomUtil modelToDictionary:[ModifyUserDataInput shareInstance]];
+        [[NetInterface shareInstance] modifyUserData:@"modifyUserData" param:dict successBlock:^(NSDictionary *responseDict) {
+            ModifyUserData *returnData = [ModifyUserData modelWithDict:responseDict];
+            NSLog(@"+++%@___%@",dict,responseDict);
+            if (RETURN_SUCCESS(returnData.status)) {
+                [LoginModel shareInstance].guanzhuMessage = guanzhuFlag;
+            } else {
+                [CustomUtil showToastWithText:returnData.msg view:kWindow];
+            }
+        } failedBlock:^(NSError *err) {
+        }];
     }
     
-    //调用接口更新数据
-    [ModifyUserDataInput shareInstance].userId = [LoginModel shareInstance].userId;
-    [ModifyUserDataInput shareInstance].pushMessage = sixinFlag;
-    [ModifyUserDataInput shareInstance].userSignFlag = @"0";
-    [ModifyUserDataInput shareInstance].storeFlag = @"0";
-    NSMutableDictionary *dict = [CustomUtil modelToDictionary:[ModifyUserDataInput shareInstance]];
-    [[NetInterface shareInstance] modifyUserData:@"modifyUserData" param:dict successBlock:^(NSDictionary *responseDict) {
-        ModifyUserData *returnData = [ModifyUserData modelWithDict:responseDict];
-        if (RETURN_SUCCESS(returnData.status)) {
-            [LoginModel shareInstance].pushMessage = sixinFlag;
-        } else {
-            [CustomUtil showToastWithText:returnData.msg view:kWindow];
-        }
-    } failedBlock:^(NSError *err) {
-    }];
 }
 
 - (void)didReceiveMemoryWarning {

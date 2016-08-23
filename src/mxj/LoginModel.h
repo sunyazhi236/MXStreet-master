@@ -29,7 +29,9 @@
 @property(nonatomic, copy)NSString *userSign;     //个性签名
 @property(nonatomic, copy)NSString *image;        //用户头像
 @property(nonatomic, copy)NSString *backgroundImage; //背景图
-@property(nonatomic, copy)NSString *pushMessage;  //信息推送
+@property(nonatomic, copy)NSString *pushMessage;  //私信推送
+@property(nonatomic, copy)NSString *guanzhuMessage;  //关注推送
+
 @property(nonatomic, copy)NSString *fansNum;      //粉丝数
 @property(nonatomic, copy)NSString *followNum;    //关注数
 @property(nonatomic, copy)NSString *createTime;   //创建时间

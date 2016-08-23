@@ -13,7 +13,7 @@
 @interface ConcernManViewController : BaseViewController<UITableViewDelegate, UITableViewDataSource, UserImageViewClickProtocol, myContactManGuanZhuBtnClickDelegate>
 @property (strong, nonatomic) IBOutlet UITableView *concernManTableView; //关注的人TableView
 @property (nonatomic, copy) NSString *userId; //查询的用户Id
-
+@property (nonatomic, copy) NSString *sex;//判断我的他的关注的人的男女
 @property (nonatomic, weak) BaseViewController *currentViewController;
 @property (nonatomic, assign) NSInteger         type;
 

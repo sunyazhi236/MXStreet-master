@@ -60,8 +60,8 @@
     [topView addSubview:title];
     
     UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    rightButton.frame = CGRectMake(SCREENWIDTH - 42, 29.5, 30, 25);
-    [rightButton setImage:[UIImage imageNamed:@"icon.png"] forState:UIControlStateNormal];
+    rightButton.frame = CGRectMake(SCREENWIDTH - 37, 32.5, 20, 20);
+    [rightButton setImage:[UIImage imageNamed:@"iconNew.png"] forState:UIControlStateNormal];
     [topView addSubview:rightButton];
     [rightButton addTarget:self action:@selector(searchFriend) forControlEvents:UIControlEventTouchUpInside];
 }

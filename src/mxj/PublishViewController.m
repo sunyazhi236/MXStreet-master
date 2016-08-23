@@ -275,16 +275,9 @@ NSString *photo1Path = @"";
             UIImage *tempImage = [UIImage imageWithData:tempData];
             while (([tempData length] > (200 * 1024)) && (compression > maxCompression)) {
                 compression -= 0.01f;
-                tempData = UIImageJPEGRepresentation(targetImage, compression);
                 tempImage = [UIImage imageWithData:tempData];
             }
-            /*
-             while (([tempData length] > (200 * 1024)) && (compression > maxCompression)) {
-             tempData = UIImageJPEGRepresentation(tempImage, compression);
-             tempImage = [UIImage imageWithData:tempData];
-             compression -= 0.01f;
-             }
-             */
+
             photoData = tempData;
         }
         

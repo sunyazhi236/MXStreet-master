@@ -13,7 +13,7 @@
 
 @property (strong, nonatomic) IBOutlet UITableView *meFansTableView; //我的粉丝TableView
 @property (nonatomic, copy) NSString *userId; //需要查询的用户Id
-
+@property (nonatomic, copy) NSString *sex;//判断我的他的粉丝的男女
 @property (nonatomic, weak) BaseViewController *currentViewController;
 @property (nonatomic, assign) NSInteger         type;
 

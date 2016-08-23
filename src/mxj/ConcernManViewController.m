@@ -30,7 +30,17 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     [self.navigationController setNavigationBarHidden:NO];
-    [self.navigationItem setTitle:@"关注的人"];
+    
+    if ([_userId isEqualToString:[LoginModel shareInstance].userId]) {
+        [self.navigationItem setTitle:@"我关注的人"];
+    }
+     else if ([_sex isEqualToString:@"男"]) {
+        [self.navigationItem setTitle:@"他关注的人"];
+    }
+    else  {
+        [self.navigationItem setTitle:@"她关注的人"];
+    }
+    
     [self.concernManTableView setDelegate:self];
     [self.concernManTableView setDataSource:self];
     //添加查看更多标签

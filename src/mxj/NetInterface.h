@@ -32,7 +32,7 @@
 
 
 //-------------------- 测试服务器(调试用) -------------------------------------------------------------------
-//#warning shanpengtao_test
+#warning shanpengtao_test
 #define BASE_URL @"http://123.57.152.239:8080" //基地址
 #define NET_BASE_URL @"123.57.152.239:8080" //基地址
 #define TEST_BASE_URL @"123.57.152.239:8080/maoxj/appUser/manager"             //基地址（appUser用）
