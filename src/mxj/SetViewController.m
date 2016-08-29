@@ -306,6 +306,7 @@
     for (UIViewController *viewCtrl in viewCtrlsArray) {
         //            if ([viewCtrl isKindOfClass:[RegisterViewController class]]) {
         if ([viewCtrl isKindOfClass:[LoginVC class]]) {
+            
             //删除自动登录用用户信息文件
             NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
             NSString *path = [paths lastObject];

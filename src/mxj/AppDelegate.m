@@ -509,11 +509,11 @@
                         [tabBarCtrl setSelectedIndex:3];
                         tabBarCtrl.intoStreetFlag = 3;
                         
-//                        MessageViewController *messageViewCtrl = [tabBarCtrl.viewControllers objectAtIndexCheck:3];
-//                        [messageViewCtrl buttonClickWithType:0];
-
-//                        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[type intValue]+1 inSection:0];
-//                        [messageViewCtrl tableView:messageViewCtrl.messageTableView didSelectRowAtIndexPath:indexPath];
+                        //                        MessageViewController *messageViewCtrl = [tabBarCtrl.viewControllers objectAtIndexCheck:3];
+                        //                        [messageViewCtrl buttonClickWithType:0];
+                        
+                        //                        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[type intValue]+1 inSection:0];
+                        //                        [messageViewCtrl tableView:messageViewCtrl.messageTableView didSelectRowAtIndexPath:indexPath];
                     }
                 }
             } else {

@@ -9,10 +9,7 @@
 #import "NoticeVCViewController.h"
 
 @interface NoticeVCViewController ()
-{
-    NSString *sixinFlag; //消息推送开关标记
-    NSString *guanzhuFlag;//关注推送开关标记
-}
+
 @end
 
 @implementation NoticeVCViewController
@@ -25,82 +22,178 @@
     _tableView.delegate=self;
     _tableView.dataSource=self;
     
+//      NSUserDefaults *userdefaultt = [NSUserDefaults standardUserDefaults];
+//    if (![[userdefaultt objectForKey:[NSString stringWithFormat:@"%@%@",@"userid",[LoginModel shareInstance].userId]]isEqualToString:[LoginModel shareInstance].userId]) {
+//        [userdefaultt setObject:[LoginModel shareInstance].userId forKey:[NSString stringWithFormat:@"%@%@",@"userid",[LoginModel shareInstance].userId]];
+//         [userdefaultt synchronize];
+//        NSLog(@"++++%@",[LoginModel shareInstance].userId);
+//    }
+    
+    //私信推送按钮
     [self.sixinBtn addTarget:self action:@selector(BtnClick:) forControlEvents:UIControlEventTouchUpInside];
     self.sixinBtn.tag=1001;
-    sixinFlag = [LoginModel shareInstance].pushMessage;
-    //调整推送按钮的状态
-    if ([sixinFlag isEqualToString:@"1"]) {
-        [self.sixinBtn setBackgroundImage:[UIImage imageNamed:@"on_12"] forState:UIControlStateNormal];
-    } else if([sixinFlag isEqualToString:@"0"]) {
-        [self.sixinBtn setBackgroundImage:[UIImage imageNamed:@"off_12"] forState:UIControlStateNormal];
+     NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
+    if ([[userdefault objectForKey:@"sixinFlag"]isEqualToString:@"guan"]) {
+          [self.sixinBtn setBackgroundImage:[UIImage imageNamed:@"off_12"] forState:UIControlStateNormal];
+    }else{
+   [self.sixinBtn setBackgroundImage:[UIImage imageNamed:@"on_12"] forState:UIControlStateNormal];
     }
-    
+    //关注推送按钮
     [self.guanzhuBtn addTarget:self action:@selector(BtnClick:) forControlEvents:UIControlEventTouchUpInside];
     self.guanzhuBtn.tag=1002;
-    guanzhuFlag = [LoginModel shareInstance].guanzhuMessage;
-    //调整推送按钮的状态
-    if ([guanzhuFlag isEqualToString:@"1"]) {
-        [self.guanzhuBtn setBackgroundImage:[UIImage imageNamed:@"on_12"] forState:UIControlStateNormal];
-    } else if([guanzhuFlag isEqualToString:@"0"]) {
+    NSUserDefaults *userdefault2 = [NSUserDefaults standardUserDefaults];
+    if ([[userdefault2 objectForKey:@"guanzhuFlag"]isEqualToString:@"guan"]) {
         [self.guanzhuBtn setBackgroundImage:[UIImage imageNamed:@"off_12"] forState:UIControlStateNormal];
+    }else{
+        [self.guanzhuBtn setBackgroundImage:[UIImage imageNamed:@"on_12"] forState:UIControlStateNormal];
     }
-    NSLog(@"++++%@____%@",[LoginModel shareInstance].pushMessage,[LoginModel shareInstance].guanzhuMessage);
+    //新粉丝推送按钮
+    [self.xinfensiBtn addTarget:self action:@selector(BtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    self.xinfensiBtn.tag=1003;
+    NSUserDefaults *userdefault3 = [NSUserDefaults standardUserDefaults];
+    if ([[userdefault3 objectForKey:@"xinfensiFlag"]isEqualToString:@"guan"]) {
+        [self.xinfensiBtn setBackgroundImage:[UIImage imageNamed:@"off_12"] forState:UIControlStateNormal];
+    }else{
+        [self.xinfensiBtn setBackgroundImage:[UIImage imageNamed:@"on_12"] forState:UIControlStateNormal];
+    }
+    //评论推送按钮
+    [self.pinglunBtn addTarget:self action:@selector(BtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    self.pinglunBtn.tag=1004;
+    NSUserDefaults *userdefault4 = [NSUserDefaults standardUserDefaults];
+    if ([[userdefault4 objectForKey:@"pinglunFlag"]isEqualToString:@"guan"]) {
+        [self.pinglunBtn setBackgroundImage:[UIImage imageNamed:@"off_12"] forState:UIControlStateNormal];
+    }else{
+        [self.pinglunBtn setBackgroundImage:[UIImage imageNamed:@"on_12"] forState:UIControlStateNormal];
+    }
+    //赞推送按钮
+    [self.zanBtn addTarget:self action:@selector(BtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    self.zanBtn.tag=1005;
+    NSUserDefaults *userdefault5 = [NSUserDefaults standardUserDefaults];
+    if ([[userdefault5 objectForKey:@"zanFlag"]isEqualToString:@"guan"]) {
+        [self.zanBtn setBackgroundImage:[UIImage imageNamed:@"off_12"] forState:UIControlStateNormal];
+    }else{
+        [self.zanBtn setBackgroundImage:[UIImage imageNamed:@"on_12"] forState:UIControlStateNormal];
+    }
+    //打赏推送按钮
+    [self.dashangBtn addTarget:self action:@selector(BtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    self.dashangBtn.tag=1006;
+    NSUserDefaults *userdefault6 = [NSUserDefaults standardUserDefaults];
+    if ([[userdefault6 objectForKey:@"dashangFlag"]isEqualToString:@"guan"]) {
+        [self.dashangBtn setBackgroundImage:[UIImage imageNamed:@"off_12"] forState:UIControlStateNormal];
+    }else{
+        [self.dashangBtn setBackgroundImage:[UIImage imageNamed:@"on_12"] forState:UIControlStateNormal];
+    }
+    //系统消息推送按钮
+    [self.xitongxiaoxiBtn addTarget:self action:@selector(BtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    self.xitongxiaoxiBtn.tag=1007;
+    NSUserDefaults *userdefault7 = [NSUserDefaults standardUserDefaults];
+    if ([[userdefault7 objectForKey:@"xitongxiaoxiFlag"]isEqualToString:@"guan"]) {
+        [self.xitongxiaoxiBtn setBackgroundImage:[UIImage imageNamed:@"off_12"] forState:UIControlStateNormal];
+    }else{
+        [self.xitongxiaoxiBtn setBackgroundImage:[UIImage imageNamed:@"on_12"] forState:UIControlStateNormal];
+    }
 }
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+}
+
 
 #pragma mark -按钮点击事件处理
 //消息推送按钮点击事件
 -(void)BtnClick:(UIButton *)btn{
     if (btn.tag==1001) {
-        if ([sixinFlag isEqualToString:@"1"]) {
-            sixinFlag = @"0";
-            [self.sixinBtn setBackgroundImage:[UIImage imageNamed:@"off_12"] forState:UIControlStateNormal];
-        } else if([sixinFlag isEqualToString:@"0"]) {
-            sixinFlag = @"1";
+        if ([_sixinBtn.currentBackgroundImage isEqual:[UIImage imageNamed:@"on_12"]]) {
+        [self.sixinBtn setBackgroundImage:[UIImage imageNamed:@"off_12"] forState:UIControlStateNormal];
+            NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
+            [userdefault setObject:@"guan" forKey:@"sixinFlag"];
+            [userdefault synchronize];
+        }else{
             [self.sixinBtn setBackgroundImage:[UIImage imageNamed:@"on_12"] forState:UIControlStateNormal];
+            NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
+            [userdefault setObject:@"kai" forKey:@"sixinFlag"];
+             [userdefault synchronize];
         }
-        //调用接口更新数据
-        [ModifyUserDataInput shareInstance].userId = [LoginModel shareInstance].userId;
-        [ModifyUserDataInput shareInstance].pushMessage = sixinFlag;
-        [ModifyUserDataInput shareInstance].userSignFlag = @"0";
-        [ModifyUserDataInput shareInstance].storeFlag = @"0";
-        NSMutableDictionary *dict = [CustomUtil modelToDictionary:[ModifyUserDataInput shareInstance]];
-        [[NetInterface shareInstance] modifyUserData:@"modifyUserData" param:dict successBlock:^(NSDictionary *responseDict) {
-            ModifyUserData *returnData = [ModifyUserData modelWithDict:responseDict];
-                 NSLog(@"+++%@___%@",dict,responseDict);
-            if (RETURN_SUCCESS(returnData.status)) {
-                [LoginModel shareInstance].pushMessage = sixinFlag;
-            } else {
-                [CustomUtil showToastWithText:returnData.msg view:kWindow];
-            }
-        } failedBlock:^(NSError *err) {
-        }];
     }
     if (btn.tag==1002) {
-        if ([guanzhuFlag isEqualToString:@"1"]) {
-            guanzhuFlag = @"0";
+        if ([_guanzhuBtn.currentBackgroundImage isEqual:[UIImage imageNamed:@"on_12"]]) {
             [self.guanzhuBtn setBackgroundImage:[UIImage imageNamed:@"off_12"] forState:UIControlStateNormal];
-        } else if([guanzhuFlag isEqualToString:@"0"]) {
-            guanzhuFlag = @"1";
+            NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
+            [userdefault setObject:@"guan" forKey:@"guanzhuFlag"];
+            [userdefault synchronize];
+        }else{
             [self.guanzhuBtn setBackgroundImage:[UIImage imageNamed:@"on_12"] forState:UIControlStateNormal];
+            NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
+            [userdefault setObject:@"kai" forKey:@"guanzhuFlag"];
+            [userdefault synchronize];
         }
-        //调用接口更新数据
-        [ModifyUserDataInput shareInstance].userId = [LoginModel shareInstance].userId;
-        [ModifyUserDataInput shareInstance].guanzhuMessage = guanzhuFlag;
-        [ModifyUserDataInput shareInstance].userSignFlag = @"0";
-        [ModifyUserDataInput shareInstance].storeFlag = @"0";
-        NSMutableDictionary *dict = [CustomUtil modelToDictionary:[ModifyUserDataInput shareInstance]];
-        [[NetInterface shareInstance] modifyUserData:@"modifyUserData" param:dict successBlock:^(NSDictionary *responseDict) {
-            ModifyUserData *returnData = [ModifyUserData modelWithDict:responseDict];
-            NSLog(@"+++%@___%@",dict,responseDict);
-            if (RETURN_SUCCESS(returnData.status)) {
-                [LoginModel shareInstance].guanzhuMessage = guanzhuFlag;
-            } else {
-                [CustomUtil showToastWithText:returnData.msg view:kWindow];
-            }
-        } failedBlock:^(NSError *err) {
-        }];
     }
-    
+    if (btn.tag==1003) {
+        if ([_xinfensiBtn.currentBackgroundImage isEqual:[UIImage imageNamed:@"on_12"]]) {
+            [self.xinfensiBtn setBackgroundImage:[UIImage imageNamed:@"off_12"] forState:UIControlStateNormal];
+            NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
+            [userdefault setObject:@"guan" forKey:@"xinfensiFlag"];
+            [userdefault synchronize];
+        }else{
+            [self.xinfensiBtn setBackgroundImage:[UIImage imageNamed:@"on_12"] forState:UIControlStateNormal];
+            NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
+            [userdefault setObject:@"kai" forKey:@"xinfensiFlag"];
+            [userdefault synchronize];
+        }
+    }
+    if (btn.tag==1004) {
+        if ([_pinglunBtn.currentBackgroundImage isEqual:[UIImage imageNamed:@"on_12"]]) {
+            [self.pinglunBtn setBackgroundImage:[UIImage imageNamed:@"off_12"] forState:UIControlStateNormal];
+            NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
+            [userdefault setObject:@"guan" forKey:@"pinglunFlag"];
+            [userdefault synchronize];
+        }else{
+            [self.pinglunBtn setBackgroundImage:[UIImage imageNamed:@"on_12"] forState:UIControlStateNormal];
+            NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
+            [userdefault setObject:@"kai" forKey:@"pinglunFlag"];
+            [userdefault synchronize];
+        }
+    }
+    if (btn.tag==1005) {
+        if ([_zanBtn.currentBackgroundImage isEqual:[UIImage imageNamed:@"on_12"]]) {
+            [self.zanBtn setBackgroundImage:[UIImage imageNamed:@"off_12"] forState:UIControlStateNormal];
+            NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
+            [userdefault setObject:@"guan" forKey:@"zanFlag"];
+            [userdefault synchronize];
+        }else{
+            [self.zanBtn setBackgroundImage:[UIImage imageNamed:@"on_12"] forState:UIControlStateNormal];
+            NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
+            [userdefault setObject:@"kai" forKey:@"zanFlag"];
+            [userdefault synchronize];
+        }
+    }
+    if (btn.tag==1006) {
+        if ([_dashangBtn.currentBackgroundImage isEqual:[UIImage imageNamed:@"on_12"]]) {
+            [self.dashangBtn setBackgroundImage:[UIImage imageNamed:@"off_12"] forState:UIControlStateNormal];
+            NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
+            [userdefault setObject:@"guan" forKey:@"dashangFlag"];
+            [userdefault synchronize];
+        }else{
+            [self.dashangBtn setBackgroundImage:[UIImage imageNamed:@"on_12"] forState:UIControlStateNormal];
+            NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
+            [userdefault setObject:@"kai" forKey:@"dashangFlag"];
+            [userdefault synchronize];
+        }
+    }
+    if (btn.tag==1007) {
+        if ([_xitongxiaoxiBtn.currentBackgroundImage isEqual:[UIImage imageNamed:@"on_12"]]) {
+            [self.xitongxiaoxiBtn setBackgroundImage:[UIImage imageNamed:@"off_12"] forState:UIControlStateNormal];
+            NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
+            [userdefault setObject:@"guan" forKey:@"xitongxiaoxiFlag"];
+            [userdefault synchronize];
+        }else{
+            [self.xitongxiaoxiBtn setBackgroundImage:[UIImage imageNamed:@"on_12"] forState:UIControlStateNormal];
+            NSUserDefaults *userdefault = [NSUserDefaults standardUserDefaults];
+            [userdefault setObject:@"kai" forKey:@"xitongxiaoxiFlag"];
+            [userdefault synchronize];
+        }
+    }
+
 }
 
 - (void)didReceiveMemoryWarning {

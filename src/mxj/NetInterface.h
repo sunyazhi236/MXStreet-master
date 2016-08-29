@@ -30,7 +30,7 @@
 //#define TEST_BASE_URL_FOR_SNAP @"123.57.177.128:8080/maoxj/streetsnap/manager" //基地址（streetsnap用）
 //#define DEV_BASE_URL @"123.57.177.128:8080/maoxj/appUser/manager"           //基地址（外网）
 
-
+//192.168.1.115:8181    115便于本地测试
 //-------------------- 测试服务器(调试用) -------------------------------------------------------------------
 #warning shanpengtao_test
 #define BASE_URL @"http://123.57.152.239:8080" //基地址
