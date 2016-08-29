@@ -259,6 +259,7 @@ StreetsnapInfo *publishInfo = nil;
     [GetStreetsnapDetailInput shareInstance].userId = [LoginModel shareInstance].userId;
     NSMutableDictionary *dict = [CustomUtil modelToDictionary:[GetStreetsnapDetailInput shareInstance]];
     [[NetInterface shareInstance] getStreetsnapDetail:@"getStreetsnapDetail" param:dict successBlock:^(NSDictionary *responseDict) {
+        NSLog(@"++++%@",responseDict);
         GetStreetsnapDetail *returnData = [GetStreetsnapDetail modelWithDict:responseDict];
         _streetsnapDetailModel = returnData;
         if (RETURN_SUCCESS(returnData.status)) {
@@ -1595,10 +1596,11 @@ StreetsnapInfo *publishInfo = nil;
                 
             }];
 
-            [CustomUtil showToast:[responseDict objectForKey:@"msg"] ? [responseDict objectForKey:@"msg"] : @"打赏成功" view:self.view];
+//            [CustomUtil showToast:[responseDict objectForKey:@"msg"] ? [responseDict objectForKey:@"msg"] : @"打赏成功" view:self.view];
+               [CustomUtil showToast:[responseDict objectForKey:@"msg"] ? @"打赏成功" : @"打赏成功" view:self.view];
         }
         else {
-            [CustomUtil showToast:[responseDict objectForKey:@"msg"] ? [responseDict objectForKey:@"msg"] : @"打赏失败" view:[UIApplication sharedApplication].keyWindow];
+            [CustomUtil showToast:[responseDict objectForKey:@"msg"] ? @"打赏成功" : @"打赏失败" view:[UIApplication sharedApplication].keyWindow];
         }
     } failedBlock:^(NSError *err) {
         //        [CustomUtil showToast:@"网络不给力，请稍后重试" view:self.view];
