@@ -5339,8 +5339,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Pengsheng Han (PZ4QGA43TP)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Pengsheng Han (PZ4QGA43TP)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5365,7 +5365,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.BlueMobi.mxj;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "c94aa3df-7de4-46d4-8d52-8247f597ec32";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -5374,8 +5374,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Pengsheng Han (PZ4QGA43TP)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Pengsheng Han (PZ4QGA43TP)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5400,7 +5400,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.BlueMobi.mxj;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "c94aa3df-7de4-46d4-8d52-8247f597ec32";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};

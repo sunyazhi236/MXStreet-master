@@ -108,6 +108,17 @@
     #define VIEWCONTROLLER_NAME NSStringFromClass([self class]) //当前视图控制器名称
 #endif
 
+
+//屏幕的长宽
+#define kScreenWidth  [[UIScreen mainScreen] bounds].size.width
+#define kScreenHeight [[UIScreen mainScreen] bounds].size.height
+/*代码适配等比例拉伸（纯代码适配也可以用masonry）*/
+#define kSCREEN_WIDTH_RATIO (kScreenWidth > 375.0f ? kScreenWidth/320.0f : 1)
+#define kSCREEN_HEIGHT_RATIO (kScreenHeight > 667.0f ? kScreenHeight/568.0f : 1)
+#define kAutoWEX(w) ((w)*kSCREEN_WIDTH_RATIO)
+#define kAutoHEX(h) ((h)*kSCREEN_HEIGHT_RATIO)
+
+
 //第三方分享用宏定义
 //新浪微博：
 #define XINLANGWEIBO_APPKEY @"455546230"

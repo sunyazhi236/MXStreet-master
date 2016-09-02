@@ -25,9 +25,12 @@
 //      NSUserDefaults *userdefaultt = [NSUserDefaults standardUserDefaults];
 //    if (![[userdefaultt objectForKey:[NSString stringWithFormat:@"%@%@",@"userid",[LoginModel shareInstance].userId]]isEqualToString:[LoginModel shareInstance].userId]) {
 //        [userdefaultt setObject:[LoginModel shareInstance].userId forKey:[NSString stringWithFormat:@"%@%@",@"userid",[LoginModel shareInstance].userId]];
-//         [userdefaultt synchronize];
+//         [userdefaultt synchroni                                                                                                                                                                                                                                                                                                                                           ze];
 //        NSLog(@"++++%@",[LoginModel shareInstance].userId);
 //    }
+//      _sixinBtn.frame=CGRectMake(270, (16), kAutoWEX(40), kAutoHEX(24));
+//    NSLog(@"+++++%@",NSStringFromCGRect(_sixinBtn.superview.frame));
+    
     
     //私信推送按钮
     [self.sixinBtn addTarget:self action:@selector(BtnClick:) forControlEvents:UIControlEventTouchUpInside];

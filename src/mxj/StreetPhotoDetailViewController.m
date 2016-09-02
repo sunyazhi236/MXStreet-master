@@ -1595,11 +1595,10 @@ StreetsnapInfo *publishInfo = nil;
                 
             }];
 
-//            [CustomUtil showToast:[responseDict objectForKey:@"msg"] ? [responseDict objectForKey:@"msg"] : @"打赏成功" view:self.view];
-               [CustomUtil showToast:[responseDict objectForKey:@"msg"] ? @"打赏成功" : @"打赏成功" view:self.view];
+            [CustomUtil showToast:[responseDict objectForKey:@"msg"] ? [responseDict objectForKey:@"msg"] : @"打赏成功" view:self.view];
         }
         else {
-            [CustomUtil showToast:[responseDict objectForKey:@"msg"] ? @"打赏失败" : @"打赏失败" view:[UIApplication sharedApplication].keyWindow];
+            [CustomUtil showToast:[responseDict objectForKey:@"msg"] ? [responseDict objectForKey:@"msg"]: @"打赏失败" view:[UIApplication sharedApplication].keyWindow];
         }
     } failedBlock:^(NSError *err) {
         //        [CustomUtil showToast:@"网络不给力，请稍后重试" view:self.view];
