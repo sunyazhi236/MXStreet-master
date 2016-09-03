@@ -563,6 +563,27 @@ static NSString *openId = nil; //腾讯登录openId
                     }
                     //设定前次登录类型
                     [CustomUtil writeLoginState:2];
+                    //注册推送
+                    [[NSUserDefaults standardUserDefaults] setObject:[LoginModel shareInstance].userDoorId forKey:@"userId"];
+                    NSMutableArray *tagArray = [[NSUserDefaults standardUserDefaults] valueForKey:@"tagArray"];
+                    NSString *userId = [[NSUserDefaults standardUserDefaults] valueForKey:@"userId"];
+                    if (!tagArray && userId) {
+                        tagArray = [NSMutableArray array];
+                        NSArray *maoTagArray = [[NSMutableArray alloc]initWithObjects:@"maoxj_1",@"maoxj_2",@"maoxj_3",@"maoxj_4",@"maoxj_5",@"maoxj_6",@"maoxj_7", nil];
+                        [maoTagArray enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                            if (idx == 0) {
+                                [tagArray addObject:maoTagArray[0]];
+                            } else {
+                                [tagArray addObject:[NSString stringWithFormat:@"%@_%@", maoTagArray[idx], userId]];
+                            }
+                        }];
+                        [[NSUserDefaults standardUserDefaults] setObject:tagArray forKey:@"tagArray"];
+                        [[NSUserDefaults standardUserDefaults] synchronize];
+                    }
+                    [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:nil];
+                    [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerPushDelay:) userInfo:tagArray repeats:NO];
+                    
+                    
                     //跳转至首页
                     TabBarController *tabBarCtrl = [[TabBarController alloc] initWithNibName:@"TabBarController" bundle:nil];
                     MainPageTabBarController *mainPageViewCtrl = (MainPageTabBarController *)[[tabBarCtrl viewControllers] objectAtIndexCheck:0];
@@ -579,10 +600,33 @@ static NSString *openId = nil; //腾讯登录openId
     }
 }
 
+- (void)timerPushDelay:(NSTimer *)timer
+{
+    [JPUSHService setTags:[NSSet setWithArray:timer.userInfo] callbackSelector:@selector(tagsAliasCallback:tags:alias:) object:self];
+}
+
+//- (void)pushDelay:(NSArray *)tagArray
+//{
+//    [JPUSHService setTags:[NSSet setWithArray:tagArray] callbackSelector:@selector(tagsAliasCallback:tags:alias:) object:self];
+//}
+
+-(void)tagsAliasCallback:(int)iResCode
+                    tags:(NSSet*)tags
+                   alias:(NSString*)alias
+{
+    if (iResCode != 0) {
+        NSLog(@"设置失败");
+        [JPUSHService setTags:tags callbackSelector:@selector(tagsAliasCallback:tags:alias:) object:self];
+    } else {
+        NSLog(@"设置成功");
+        NSLog(@"%@", tags);
+        return;
+    }
+}
+
 -(void)responseDidReceived:(APIResponse *)response forMessage:(NSString *)message
 {
     
-
 }
 
 //非网络错误导致登录失败
@@ -699,6 +743,25 @@ static NSString *openId = nil; //腾讯登录openId
                             [LoginModel shareInstance].image = [TKWeixinLogin shareInstance].headimgurl;
                         }
                         [CustomUtil writeLoginState:3];
+                        //注册推送
+                        [[NSUserDefaults standardUserDefaults] setObject:[LoginModel shareInstance].userDoorId forKey:@"userId"];
+
+                        NSMutableArray *tagArray = [[NSUserDefaults standardUserDefaults] valueForKey:@"tagArray"];
+                        NSString *userId = [[NSUserDefaults standardUserDefaults] valueForKey:@"userId"];
+                        if (!tagArray && userId) {
+                            tagArray = [NSMutableArray array];
+                            NSArray *maoTagArray = [[NSMutableArray alloc]initWithObjects:@"maoxj_1",@"maoxj_2",@"maoxj_3",@"maoxj_4",@"maoxj_5",@"maoxj_6",@"maoxj_7", nil];
+                            [maoTagArray enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                                if (idx == 0) {
+                                    [tagArray addObject:maoTagArray[0]];
+                                } else {
+                                    [tagArray addObject:[NSString stringWithFormat:@"%@_%@", maoTagArray[idx], userId]];
+                                }
+                            }];
+                            [[NSUserDefaults standardUserDefaults] setObject:tagArray forKey:@"tagArray"];
+                            [[NSUserDefaults standardUserDefaults] synchronize];
+                        }
+                        [JPUSHService setTags:[NSSet setWithArray:tagArray] aliasInbackground:nil];
                         //跳转至首页
                         TabBarController *tabBarCtrl = [[TabBarController alloc] initWithNibName:@"TabBarController" bundle:nil];
                         MainPageTabBarController *mainPageViewCtrl = (MainPageTabBarController *)[[tabBarCtrl viewControllers] objectAtIndexCheck:0];
@@ -830,6 +893,26 @@ static NSString *openId = nil; //腾讯登录openId
                                 [LoginModel shareInstance].image = [TKWeixinLogin shareInstance].headimgurl;
                             }
                             [CustomUtil writeLoginState:3];
+                            //注册推送
+                            NSMutableArray *tagArray = [[NSUserDefaults standardUserDefaults] valueForKey:@"tagArray"];
+                            NSString *userId = [LoginModel shareInstance].userDoorId;
+                            [[NSUserDefaults standardUserDefaults] setObject:userId forKey:@"userId"];
+                            if (tagArray.count == 0 && userId) {
+                                tagArray = [NSMutableArray array];
+                                NSArray *maoTagArray = [[NSMutableArray alloc]initWithObjects:@"maoxj_1",@"maoxj_2",@"maoxj_3",@"maoxj_4",@"maoxj_5",@"maoxj_6",@"maoxj_7",@"maoxj_8", nil];
+                                [maoTagArray enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                                    if (idx == 0) {
+                                        [tagArray addObject:maoTagArray[0]];
+                                    } else {
+                                        [tagArray addObject:[NSString stringWithFormat:@"%@_%@", maoTagArray[idx], userId]];
+                                    }
+                                }];
+                                [[NSUserDefaults standardUserDefaults] setObject:tagArray forKey:@"tagArray"];
+                                [[NSUserDefaults standardUserDefaults] synchronize];
+                            }
+                            [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:nil];
+                            
+                            [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerPushDelay:) userInfo:tagArray repeats:NO];
                             //跳转至首页
                             TabBarController *tabBarCtrl = [[TabBarController alloc] initWithNibName:@"TabBarController" bundle:nil];
                             MainPageTabBarController *mainPageViewCtrl = (MainPageTabBarController *)[[tabBarCtrl viewControllers] objectAtIndexCheck:0];
@@ -884,6 +967,8 @@ static NSString *openId = nil; //腾讯登录openId
         });
     });
 }
+
+
 
 //获取微信用户信息
 -(void)getWeixinUserInfo:(void(^)())block
@@ -1029,6 +1114,25 @@ static NSString *openId = nil; //腾讯登录openId
                             [LoginModel shareInstance].image = [TKWeiboLogin shareInstance].image;
                         }
                         [CustomUtil writeLoginState:4];
+                        //注册推送
+                        [[NSUserDefaults standardUserDefaults] setObject:[LoginModel shareInstance].userDoorId forKey:@"userId"];
+
+                        NSMutableArray *tagArray = [[NSUserDefaults standardUserDefaults] valueForKey:@"tagArray"];
+                        NSString *userId = [[NSUserDefaults standardUserDefaults] valueForKey:@"userId"];
+                        if (!tagArray && userId) {
+                            tagArray = [NSMutableArray array];
+                            NSArray *maoTagArray = [[NSMutableArray alloc]initWithObjects:@"maoxj_1",@"maoxj_2",@"maoxj_3",@"maoxj_4",@"maoxj_5",@"maoxj_6",@"maoxj_7", nil];
+                            [maoTagArray enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                                if (idx == 0) {
+                                    [tagArray addObject:maoTagArray[0]];
+                                } else {
+                                    [tagArray addObject:[NSString stringWithFormat:@"%@_%@", maoTagArray[idx], userId]];
+                                }
+                            }];
+                            [[NSUserDefaults standardUserDefaults] setObject:tagArray forKey:@"tagArray"];
+                            [[NSUserDefaults standardUserDefaults] synchronize];
+                        }
+                        [JPUSHService setTags:[NSSet setWithArray:tagArray] aliasInbackground:nil];
                         //跳转至首页
                         TabBarController *tabBarCtrl = [[TabBarController alloc] initWithNibName:@"TabBarController" bundle:nil];
                         MainPageTabBarController *mainPageViewCtrl = (MainPageTabBarController *)[[tabBarCtrl viewControllers] objectAtIndexCheck:0];
@@ -1177,7 +1281,28 @@ static NSString *openId = nil; //腾讯登录openId
                                 [LoginModel shareInstance].image = [TKWeiboLogin shareInstance].image;
                             }
                             [CustomUtil writeLoginState:4];
+                            //注册推送
+                            [[NSUserDefaults standardUserDefaults] setObject:[LoginModel shareInstance].userDoorId forKey:@"userId"];
+
+                            NSMutableArray *tagArray = [[NSUserDefaults standardUserDefaults] valueForKey:@"tagArray"];
+                            NSString *userId = [[NSUserDefaults standardUserDefaults] valueForKey:@"userId"];
+                            if (!tagArray && userId) {
+                                tagArray = [NSMutableArray array];
+                                NSArray *maoTagArray = [[NSMutableArray alloc]initWithObjects:@"maoxj_1",@"maoxj_2",@"maoxj_3",@"maoxj_4",@"maoxj_5",@"maoxj_6",@"maoxj_7", nil];
+                                [maoTagArray enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                                    if (idx == 0) {
+                                        [tagArray addObject:maoTagArray[0]];
+                                    } else {
+                                        [tagArray addObject:[NSString stringWithFormat:@"%@_%@", maoTagArray[idx], userId]];
+                                    }
+                                }];
+                                [[NSUserDefaults standardUserDefaults] setObject:tagArray forKey:@"tagArray"];
+                                [[NSUserDefaults standardUserDefaults] synchronize];
+                            }
+                            [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:nil];
+                            [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerPushDelay:) userInfo:tagArray repeats:NO];
                             //跳转至首页
+                            
                             TabBarController *tabBarCtrl = [[TabBarController alloc] initWithNibName:@"TabBarController" bundle:nil];
                             MainPageTabBarController *mainPageViewCtrl = (MainPageTabBarController *)[[tabBarCtrl viewControllers] objectAtIndexCheck:0];
                             mainPageViewCtrl.loginFlag = YES;

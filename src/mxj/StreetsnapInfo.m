@@ -21,4 +21,14 @@
     return self;
 }
 
+- (id)valueForUndefinedKey:(NSString *)key {
+    
+    return nil;
+}
+
+- (void)setValue:(id)value forUndefinedKey:(NSString *)key {
+
+}
+
+
 @end

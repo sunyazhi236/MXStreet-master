@@ -33,4 +33,7 @@
 
 - (instancetype)initWithDelegate:(id<MenuBtnClickDelegate>)menuBtnDelegate;
 
+- (void)btnClickWithTag:(NSInteger)tag;
+
+
 @end

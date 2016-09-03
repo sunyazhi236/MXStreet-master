@@ -76,6 +76,12 @@
     UIButton *btn = [self viewWithTag:MENU_FLAG + 1];
     [self btnClick:btn];
 }
+//tag从0开始
+- (void)btnClickWithTag:(NSInteger)tag
+{
+    UIButton *btn = [self viewWithTag:MENU_FLAG + tag];
+    [self btnClick:btn];
+}
 
 - (void)btnClick:(UIButton *)sender {
     

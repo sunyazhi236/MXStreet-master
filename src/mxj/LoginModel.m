@@ -24,6 +24,15 @@ static LoginModel *shareInstance = nil;
     return shareInstance;
 }
 
+- (void)setValue:(id)value forUndefinedKey:(NSString *)key {
+
+}
+
+
+- (id)valueForUndefinedKey:(NSString *)key {
+    
+    return nil;
+}
 //获取单例
 +(instancetype)shareInstance
 {

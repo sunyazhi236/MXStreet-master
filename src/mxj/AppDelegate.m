@@ -22,6 +22,7 @@
 #import "StreetPhotoDetailViewController.h"
 #import "SearchFriendViewController.h"
 #import "PublishViewController.h"
+#import "NewMyVC.h"
 
 #define BUGLY_APP_ID @"900029804"
 @interface AppDelegate () <BuglyDelegate>
@@ -151,6 +152,24 @@
                         //更新内容
                         [userInfoDict writeToFile:userInfoPath atomically:YES];
                         [CustomUtil writeLoginState:1];
+                        //注册推送
+                        NSMutableArray *tagArray = [[NSUserDefaults standardUserDefaults] valueForKey:@"tagArray"];
+                        NSString *userId = [[NSUserDefaults standardUserDefaults] valueForKey:@"userId"];
+                        if (!tagArray && userId) {
+                            tagArray = [NSMutableArray array];
+                            NSArray *maoTagArray = [[NSMutableArray alloc]initWithObjects:@"maoxj_1",@"maoxj_2",@"maoxj_3",@"maoxj_4",@"maoxj_5",@"maoxj_6",@"maoxj_7",@"maoxj_8", nil];
+                            [maoTagArray enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                                if (idx == 0) {
+                                    [tagArray addObject:maoTagArray[0]];
+                                } else {
+                                    [tagArray addObject:[NSString stringWithFormat:@"%@_%@", maoTagArray[idx], userId]];
+                                }
+                            }];
+                            [[NSUserDefaults standardUserDefaults] setObject:tagArray forKey:@"tagArray"];
+                            [[NSUserDefaults standardUserDefaults] synchronize];
+                        }
+                        [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:nil];
+                        [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerPushDelay:) userInfo:tagArray repeats:NO];
                         //跳转至主页
                         TabBarController *tabBarCtrl = [[TabBarController alloc] initWithNibName:@"TabBarController" bundle:nil];
                         MainPageTabBarController *mainPageViewCtrl = (MainPageTabBarController *)[[tabBarCtrl viewControllers] objectAtIndexCheck:0];
@@ -215,22 +234,23 @@
     //注册bugly
     [self setupBugly];
 
-    //极光推送
+    //注册推送
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(JPushRegisterNotification:) name:kJPFNetworkDidLoginNotification object:nil];
+    
     
     
     if ([[UIDevice currentDevice].systemVersion floatValue] >= 8.0) {
         //可以添加自定义categories
-        [APService registerForRemoteNotificationTypes:(UIUserNotificationTypeBadge |
+        [JPUSHService registerForRemoteNotificationTypes:(UIUserNotificationTypeBadge |
                                                        UIUserNotificationTypeSound |
                                                        UIUserNotificationTypeAlert)
                                            categories:nil];
     } else {
         //categories 必须为nil
-        [APService registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert) categories:nil];
+        [JPUSHService registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert) categories:nil];
     }
     
-    [APService setupWithOption:launchOptions];
+    [JPUSHService setupWithOption:launchOptions];
     
     //启动监听，每5分钟检查一次登录用户密码是否变更
     if (!timer) {
@@ -247,6 +267,8 @@
     
     return YES;
 }
+
+
 
 - (void)setupBugly
 {
@@ -343,7 +365,10 @@
 //极光推送广播
 -(void)JPushRegisterNotification:(NSNotification *)notification
 {
-    NSString *registerId = [APService registrationID];
+    NSString *registerId;
+//    if (![JPUSHService registrationID]) {
+        registerId = [JPUSHService registrationID];
+//    }
     LoginModel *loginModel = [[LoginModel alloc] initWithDict:nil];
     DLog(@"%@", loginModel);
     [LoginModel shareInstance].registerId = registerId;
@@ -362,6 +387,49 @@
     }
     //更新内容
     [userInfoDict writeToFile:userInfoPath atomically:YES];
+    
+//    //注册推送
+//    NSMutableArray *tagArray = [[NSUserDefaults standardUserDefaults] valueForKey:@"tagArray"];
+//    NSString *userId = [[NSUserDefaults standardUserDefaults] valueForKey:@"userId"];
+//    if (!tagArray && userId) {
+//        tagArray = [NSMutableArray array];
+//        NSArray *maoTagArray = [[NSMutableArray alloc]initWithObjects:@"maoxj_1",@"maoxj_2",@"maoxj_3",@"maoxj_4",@"maoxj_5",@"maoxj_6",@"maoxj_7",@"maoxj_8", nil];
+//        [maoTagArray enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+//            if (idx == 0) {
+//                [tagArray addObject:maoTagArray[0]];
+//            } else {
+//                [tagArray addObject:[NSString stringWithFormat:@"%@_%@", maoTagArray[idx], userId]];
+//            }
+//        }];
+//        [[NSUserDefaults standardUserDefaults] setObject:tagArray forKey:@"tagArray"];
+//        [[NSUserDefaults standardUserDefaults] synchronize];
+//    }
+//    [self performSelector:@selector(pushDelay:) withObject:tagArray afterDelay:1];
+}
+
+- (void)pushDelay:(NSArray *)tagArray
+{
+    [JPUSHService setTags:[NSSet setWithArray:tagArray] callbackSelector:@selector(tagsAliasCallback:tags:alias:) object:self];
+    
+}
+
+- (void)timerPushDelay:(NSTimer *)timer1
+{
+    [JPUSHService setTags:[NSSet setWithArray:timer1.userInfo] callbackSelector:@selector(tagsAliasCallback:tags:alias:) object:self];
+}
+
+-(void)tagsAliasCallback:(int)iResCode
+                    tags:(NSSet*)tags
+                   alias:(NSString*)alias
+{
+    if (iResCode != 0) {
+        NSLog(@"设置失败");
+        [JPUSHService setTags:tags callbackSelector:@selector(tagsAliasCallback:tags:alias:) object:self];
+    } else {
+        NSLog(@"设置成功");
+        NSLog(@"%@", tags);
+        return;
+    }
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -451,7 +519,7 @@
                 //设置桌面图标右上角的数字
                 NSInteger badgeNum = [unreadNumData.commentNum intValue] + [unreadNumData.noticeNum intValue] + [unreadNumData.messageNum intValue] + [unreadNumData.praiseNum intValue];
                 [UIApplication sharedApplication].applicationIconBadgeNumber = badgeNum;
-                [APService setBadge:badgeNum];
+                [JPUSHService setBadge:badgeNum];
             }
         } failedBlock:^(NSError *err) {
         }];
@@ -461,17 +529,17 @@
 #pragma mark -极光推送
 -(void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
-    [APService registerDeviceToken:deviceToken];
+    [JPUSHService registerDeviceToken:deviceToken];
 }
 
 -(void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
-    [APService handleRemoteNotification:userInfo];
+    [JPUSHService handleRemoteNotification:userInfo];
 }
 
 -(void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
-    [APService handleRemoteNotification:userInfo];
+    [JPUSHService handleRemoteNotification:userInfo];
     completionHandler(UIBackgroundFetchResultNewData);
     DLog(@"userInfo = %@", userInfo);
     /*
@@ -496,12 +564,14 @@
      type = 2;
      }
      */
+    NSLog(@"%@", userInfo);
     NSString *type = [userInfo objectForKey:@"type"];
     if (UIApplicationStateActive == application.applicationState) {
         DLog(@"应用进入前台");
     } else if(UIApplicationStateInactive == application.applicationState) {
         if (![CustomUtil CheckParam:[LoginModel shareInstance].userId]) {
-            if (![type isEqualToString:@"2"]) {
+
+            if (![type isEqualToString:@"2"] && ![type isEqualToString:@"8"] && ![type isEqualToString:@"6"] && ![type isEqualToString:@"5"] && ![type isEqualToString:@"1"]) {
                 //跳转至通知列表或私信列表界面
                 for (UIViewController *viewCtrl in [(UINavigationController *)_window.rootViewController viewControllers]) {
                     if ([viewCtrl isKindOfClass:[TabBarController class]]) {
@@ -509,14 +579,57 @@
                         [tabBarCtrl setSelectedIndex:3];
                         tabBarCtrl.intoStreetFlag = 3;
                         
-                        //                        MessageViewController *messageViewCtrl = [tabBarCtrl.viewControllers objectAtIndexCheck:3];
-                        //                        [messageViewCtrl buttonClickWithType:0];
+                        for (UIViewController *vc in tabBarCtrl.viewControllers) {
+                            if (vc.navigationController.viewControllers.count > 3) {
+                                [vc.navigationController popToViewController:vc.navigationController.viewControllers[2] animated:NO];
+                            }
+                        }
                         
-                        //                        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[type intValue]+1 inSection:0];
-                        //                        [messageViewCtrl tableView:messageViewCtrl.messageTableView didSelectRowAtIndexPath:indexPath];
+                        MessageViewController *messageViewCtrl = [tabBarCtrl.viewControllers objectAtIndexCheck:3];
+                        if ([type isEqualToString:@"3"]) {
+                            [messageViewCtrl buttonClickWithType:0];
+                        } else if ([type isEqualToString:@"7"]) {
+                            [messageViewCtrl buttonClickWithType:1];
+                        } else if ([type isEqualToString:@"4"]) {
+                            [messageViewCtrl buttonClickWithType:2];
+                        }
                     }
                 }
-            } else {
+            } else if ([type isEqualToString:@"8"] || [type isEqualToString:@"1"]) {
+                //跳首页
+                for (UIViewController *viewCtrl in [(UINavigationController *)_window.rootViewController viewControllers]) {
+                    if ([viewCtrl isKindOfClass:[TabBarController class]]) {
+                        TabBarController *tabBarCtrl = (TabBarController *)viewCtrl;
+                        [tabBarCtrl setSelectedIndex:0];
+                        tabBarCtrl.intoStreetFlag = 2;
+                        for (UIViewController *vc in tabBarCtrl.viewControllers) {
+                            if (vc.navigationController.viewControllers.count > 3) {
+                                [vc.navigationController popToViewController:vc.navigationController.viewControllers[2] animated:NO];
+                            }
+                        }
+                        MainPageTabBarController *mainPageTabBarController = [tabBarCtrl.viewControllers objectAtIndexCheck:0];
+                        [mainPageTabBarController.menuBtnCell btnClickWithTag:1];
+                    }
+                }
+            } else if ([type isEqualToString:@"5"]) {
+                //跳个人页面
+                for (UIViewController *viewCtrl in [(UINavigationController *)_window.rootViewController viewControllers]) {
+                    if ([viewCtrl isKindOfClass:[TabBarController class]]) {
+                        TabBarController *tabBarCtrl = (TabBarController *)viewCtrl;
+                        [tabBarCtrl setSelectedIndex:4];
+                        tabBarCtrl.intoStreetFlag = 4;
+                        NewMyVC *vc = [tabBarCtrl.viewControllers objectAtIndexCheck:4];
+                        
+                        MyStreetPhotoViewController *viewCtrl = [[MyStreetPhotoViewController alloc] initWithNibName:@"MyStreetPhotoViewController" bundle:nil];
+                        NSString *userID = [userInfo valueForKey:@"userId"];
+                        //传参数
+                        viewCtrl.userId = userID;
+                        viewCtrl.type = 1;
+                        [vc.navigationController pushViewController:viewCtrl animated:YES];
+                    }
+                }
+            }
+            else {
                 //跳转至街拍详情列表界面
                 for (UIViewController *viewCtrl in [(UINavigationController *)_window.rootViewController viewControllers]) {
                     if ([viewCtrl isKindOfClass:[TabBarController class]]) {

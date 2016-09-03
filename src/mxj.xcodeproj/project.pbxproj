@@ -409,7 +409,6 @@
 		87C411311C1819E8006A9986 /* TouchPositionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 87C411301C1819E8006A9986 /* TouchPositionModel.m */; };
 		87C4113B1C1877AB006A9986 /* LabelButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 87C4113A1C1877AB006A9986 /* LabelButton.m */; };
 		87C4F2CA1C22F981002F246D /* TKLoginType.m in Sources */ = {isa = PBXBuildFile; fileRef = 87C4F2C91C22F981002F246D /* TKLoginType.m */; };
-		87C4F2CE1C2307AD002F246D /* libPushSDK-1.8.8.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 87C4F2CD1C2307AD002F246D /* libPushSDK-1.8.8.a */; };
 		87C4F2D01C230827002F246D /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87C4F2CF1C230827002F246D /* CoreFoundation.framework */; };
 		87C4F2D21C2308CE002F246D /* PushConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 87C4F2D11C2308CE002F246D /* PushConfig.plist */; };
 		87C889431C4E0DCF0085085E /* GetPopTagListInput.m in Sources */ = {isa = PBXBuildFile; fileRef = 87C889421C4E0DCF0085085E /* GetPopTagListInput.m */; };
@@ -461,6 +460,7 @@
 		87F84F721C44D129001C8774 /* MyLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 87F84F711C44D129001C8774 /* MyLabel.m */; };
 		87FB1D271C3F9BE4006EF22E /* LogoutInput.m in Sources */ = {isa = PBXBuildFile; fileRef = 87FB1D261C3F9BE4006EF22E /* LogoutInput.m */; };
 		87FB1D2B1C3FDF1A006EF22E /* CacheService.m in Sources */ = {isa = PBXBuildFile; fileRef = 87FB1D2A1C3FDF1A006EF22E /* CacheService.m */; };
+		9D77E24A1D75FEE300FB99DE /* jpush-ios-2.1.8.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D77E2491D75FEE300FB99DE /* jpush-ios-2.1.8.a */; };
 		9E01F3BB1D62E8CF0054FBED /* NoticeVCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E01F3B91D62E8CF0054FBED /* NoticeVCViewController.m */; };
 		9E01F3BC1D62E8CF0054FBED /* NoticeVCViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9E01F3BA1D62E8CF0054FBED /* NoticeVCViewController.xib */; };
 		9E2E99A21D67E6C800ED0071 /* iconNew.png in Resources */ = {isa = PBXBuildFile; fileRef = 9E2E99A11D67E6C800ED0071 /* iconNew.png */; };
@@ -1208,8 +1208,6 @@
 		87C4113A1C1877AB006A9986 /* LabelButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LabelButton.m; sourceTree = "<group>"; };
 		87C4F2C81C22F981002F246D /* TKLoginType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKLoginType.h; sourceTree = "<group>"; };
 		87C4F2C91C22F981002F246D /* TKLoginType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKLoginType.m; sourceTree = "<group>"; };
-		87C4F2CC1C2307AD002F246D /* APService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APService.h; sourceTree = "<group>"; };
-		87C4F2CD1C2307AD002F246D /* libPushSDK-1.8.8.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPushSDK-1.8.8.a"; path = "mxj/libPushSDK-1.8.8.a"; sourceTree = "<group>"; };
 		87C4F2CF1C230827002F246D /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		87C4F2D11C2308CE002F246D /* PushConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = PushConfig.plist; sourceTree = "<group>"; };
 		87C889411C4E0DCF0085085E /* GetPopTagListInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetPopTagListInput.h; sourceTree = "<group>"; };
@@ -1304,6 +1302,8 @@
 		87FB1D261C3F9BE4006EF22E /* LogoutInput.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogoutInput.m; sourceTree = "<group>"; };
 		87FB1D291C3FDF1A006EF22E /* CacheService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CacheService.h; sourceTree = "<group>"; };
 		87FB1D2A1C3FDF1A006EF22E /* CacheService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CacheService.m; sourceTree = "<group>"; };
+		9D77E2491D75FEE300FB99DE /* jpush-ios-2.1.8.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "jpush-ios-2.1.8.a"; sourceTree = "<group>"; };
+		9D77E24B1D75FEEF00FB99DE /* JPUSHService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JPUSHService.h; sourceTree = "<group>"; };
 		9E01F3B81D62E8CF0054FBED /* NoticeVCViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoticeVCViewController.h; sourceTree = "<group>"; };
 		9E01F3B91D62E8CF0054FBED /* NoticeVCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoticeVCViewController.m; sourceTree = "<group>"; };
 		9E01F3BA1D62E8CF0054FBED /* NoticeVCViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NoticeVCViewController.xib; sourceTree = "<group>"; };
@@ -1406,7 +1406,6 @@
 				877342B91C1DB31D00B49C72 /* OpenGLES.framework in Frameworks */,
 				876A062A1C1DD9C00080A528 /* MAMapKit.framework in Frameworks */,
 				87003EE81C55E54500E34D23 /* SMS_SDK.framework in Frameworks */,
-				87C4F2CE1C2307AD002F246D /* libPushSDK-1.8.8.a in Frameworks */,
 				877342AF1C1D9D6500B49C72 /* CoreLocation.framework in Frameworks */,
 				87D9A2031C1D55FA0017152A /* AddressBookUI.framework in Frameworks */,
 				876A06301C1DDA200080A528 /* libWeChatSDK.a in Frameworks */,
@@ -1422,6 +1421,7 @@
 				87B000C31C198E620067F86A /* libiconv.tbd in Frameworks */,
 				876A062E1C1DDA0E0080A528 /* AMapSearchKit.framework in Frameworks */,
 				5D71B0421BFE0A53003DEC54 /* CoreGraphics.framework in Frameworks */,
+				9D77E24A1D75FEE300FB99DE /* jpush-ios-2.1.8.a in Frameworks */,
 				5D71B0401BFE0A4C003DEC54 /* Foundation.framework in Frameworks */,
 				87B000C11C198E340067F86A /* TencentOpenAPI.framework in Frameworks */,
 				D4445D021CE2F84D00B85778 /* Bugly.framework in Frameworks */,
@@ -2328,8 +2328,8 @@
 			children = (
 				D4445D011CE2F84D00B85778 /* Bugly.framework */,
 				87C4F2CF1C230827002F246D /* CoreFoundation.framework */,
-				87C4F2CD1C2307AD002F246D /* libPushSDK-1.8.8.a */,
 				876A062F1C1DDA200080A528 /* libWeChatSDK.a */,
+				9D77E2491D75FEE300FB99DE /* jpush-ios-2.1.8.a */,
 				D4445CFF1CE2138400B85778 /* AMap.bundle */,
 				87003EE01C55E54500E34D23 /* SMS_SDK */,
 				876A062B1C1DDA0E0080A528 /* AMapLocationKit.framework */,
@@ -4102,7 +4102,7 @@
 		87C4F2CB1C230799002F246D /* JPush */ = {
 			isa = PBXGroup;
 			children = (
-				87C4F2CC1C2307AD002F246D /* APService.h */,
+				9D77E24B1D75FEEF00FB99DE /* JPUSHService.h */,
 			);
 			name = JPush;
 			sourceTree = "<group>";
@@ -4892,7 +4892,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		D4445D031CE2FBA000B85778 /* Run Script For Bugly dSYM Upload */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 12;
 			files = (
 			);
 			inputPaths = (

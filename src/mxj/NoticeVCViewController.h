@@ -26,4 +26,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *dashangBtn;
 @property (weak, nonatomic) IBOutlet UIButton *xitongxiaoxiBtn;
 
++ (instancetype)shareViewController;
+
 @end

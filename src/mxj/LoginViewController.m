@@ -144,6 +144,25 @@
             mainPageViewCtrl.loginFlag = YES; //login进入
             [self.navigationController setNavigationBarHidden:YES];
             [self.navigationController pushViewController:tabBarCtrl animated:YES];
+            
+            //注册推送
+            [[NSUserDefaults standardUserDefaults] setObject:[LoginModel shareInstance].userDoorId forKey:@"userId"];
+
+            NSMutableArray *tagArray = [[NSUserDefaults standardUserDefaults] valueForKey:@"tagArray"];
+            NSString *userId = [[NSUserDefaults standardUserDefaults] valueForKey:@"userId"];
+            if (!tagArray && userId) {
+                NSArray *maoTagArray = [[NSMutableArray alloc]initWithObjects:@"maoxj_1",@"maoxj_2",@"maoxj_3",@"maoxj_4",@"maoxj_5",@"maoxj_6",@"maoxj_7", nil];
+                [maoTagArray enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                    if (idx == 0) {
+                        [tagArray addObject:maoTagArray[0]];
+                    } else {
+                        [tagArray addObject:[NSString stringWithFormat:@"%@_%@", maoTagArray[idx], userId]];
+                    }
+                }];
+                [[NSUserDefaults standardUserDefaults] setObject:tagArray forKey:@"tagArray"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+            }
+            [self performSelector:@selector(pushDelay:) withObject:tagArray afterDelay:1];
         } else {
             [CustomUtil showToastWithText:loginModel.msg view:kWindow];
             return;
@@ -169,6 +188,26 @@
     [self.navigationController setNavigationBarHidden:YES];
     [self.navigationController pushViewController:tabBarCtrl animated:YES];
 #endif
+}
+
+- (void)pushDelay:(NSArray *)tagArray
+{
+    [JPUSHService setTags:[NSSet setWithArray:tagArray] callbackSelector:@selector(tagsAliasCallback:tags:alias:) object:self];
+    
+}
+
+-(void)tagsAliasCallback:(int)iResCode
+                    tags:(NSSet*)tags
+                   alias:(NSString*)alias
+{
+    if (iResCode != 0) {
+        NSLog(@"设置失败");
+        [JPUSHService setTags:tags callbackSelector:@selector(tagsAliasCallback:tags:alias:) object:self];
+    } else {
+        NSLog(@"设置成功");
+        return;
+    }
+    
 }
 
 //QQ登录按钮点击事件

@@ -334,6 +334,26 @@
             //更新内容
             [userInfoDict writeToFile:userInfoPath atomically:YES];
             [CustomUtil writeLoginState:1];
+            //注册推送
+            [[NSUserDefaults standardUserDefaults] setObject:[LoginModel shareInstance].userDoorId forKey:@"userId"];
+
+            NSMutableArray *tagArray = [[NSUserDefaults standardUserDefaults] valueForKey:@"tagArray"];
+            NSString *userId = [[NSUserDefaults standardUserDefaults] valueForKey:@"userId"];
+            if (!tagArray && userId) {
+                tagArray = [NSMutableArray array];
+                NSArray *maoTagArray = [[NSMutableArray alloc]initWithObjects:@"maoxj_1",@"maoxj_2",@"maoxj_3",@"maoxj_4",@"maoxj_5",@"maoxj_6",@"maoxj_7", nil];
+                [maoTagArray enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                    if (idx == 0) {
+                        [tagArray addObject:maoTagArray[0]];
+                    } else {
+                        [tagArray addObject:[NSString stringWithFormat:@"%@_%@", maoTagArray[idx], userId]];
+                    }
+                }];
+                [[NSUserDefaults standardUserDefaults] setObject:tagArray forKey:@"tagArray"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+            }
+            [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:nil];
+            [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timerPushDelay:) userInfo:tagArray repeats:NO];
             //跳转至主页
             TabBarController *tabBarCtrl = [[TabBarController alloc] initWithNibName:@"TabBarController" bundle:nil];
             MainPageTabBarController *mainPageViewCtrl = (MainPageTabBarController *)[[tabBarCtrl viewControllers] objectAtIndexCheck:0];
@@ -365,6 +385,32 @@
     [self.navigationController setNavigationBarHidden:YES];
     [self.navigationController pushViewController:tabBarCtrl animated:YES];
 #endif
+}
+
+- (void)pushDelay:(NSArray *)tagArray
+{
+    [JPUSHService setTags:[NSSet setWithArray:tagArray] callbackSelector:@selector(tagsAliasCallback:tags:alias:) object:self];
+    
+}
+
+- (void)timerPushDelay:(NSTimer *)timer
+{
+    [JPUSHService setTags:[NSSet setWithArray:timer.userInfo] callbackSelector:@selector(tagsAliasCallback:tags:alias:) object:self];
+}
+
+-(void)tagsAliasCallback:(int)iResCode
+                    tags:(NSSet*)tags
+                   alias:(NSString*)alias
+{
+    if (iResCode != 0) {
+        NSLog(@"设置失败");
+        [JPUSHService setTags:tags callbackSelector:@selector(tagsAliasCallback:tags:alias:) object:self];
+    } else {
+        
+        NSLog(@"设置成功");
+        NSLog(@"%@", tags);
+        return;
+    }
 }
 
 //QQ登录按钮点击事件

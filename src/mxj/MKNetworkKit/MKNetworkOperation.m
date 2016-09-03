@@ -569,12 +569,46 @@
                                       [[NSDate date] descriptionWithLocale:[NSLocale currentLocale]],
                                       [self curlCommandLineString]];
     
-    NSString *responseString = [self responseString];    
+    NSString *responseString = [self responseString];
+    
+//    NSDictionary *dic = [responseString valueForKey:@"data"];
+//    NSData *JSONData = [responseString dataUsingEncoding:NSUTF8StringEncoding];
+//    NSDictionary *responseJSON = [NSJSONSerialization JSONObjectWithData:JSONData options:NSJSONReadingMutableLeaves error:nil];
+//    NSDictionary *dataDic = responseJSON[@"data"];
+//    
+//    LoginModel *loginModel = [[LoginModel alloc]initWithDict:dataDic];
+//    if (loginModel.userDoorId) {
+//        [[NSUserDefaults standardUserDefaults] setObject:loginModel.userDoorId forKey:@"userId"];
+//    }
+    NSLog(@"用户名%@",[LoginModel shareInstance].registrationId);
+    
+
+    
+    
     if([responseString length] > 0) {
         [displayString appendFormat:@"\n--------\nResponse\n--------\n%@\n", responseString];
     }
     
     return displayString;
+}
+
+- (void)pushDelay:(NSArray *)tagArray
+{
+    [JPUSHService setTags:[NSSet setWithArray:tagArray] callbackSelector:@selector(tagsAliasCallback:tags:alias:) object:self];
+    
+}
+
+-(void)tagsAliasCallback:(int)iResCode
+                    tags:(NSSet*)tags
+                   alias:(NSString*)alias
+{
+    if (iResCode != 0) {
+        NSLog(@"设置失败");
+        [JPUSHService setTags:tags callbackSelector:@selector(tagsAliasCallback:tags:alias:) object:self];
+    } else {
+        NSLog(@"设置成功");
+        return;
+    }
 }
 
 -(NSString*) curlCommandLineString
@@ -1185,7 +1219,6 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
     }
 }
 
-
 #pragma mark -
 #pragma mark Overridable methods
 
@@ -1194,6 +1227,7 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
     // don't log for cached responses
     if(![self isCachedResponse])
         DLog(@"%@", self);
+    [[NSUserDefaults standardUserDefaults] setObject:[LoginModel shareInstance].userDoorId forKey:@"userId"];
     
     for(MKNKResponseBlock responseBlock in self.responseBlocks)
         responseBlock(self);

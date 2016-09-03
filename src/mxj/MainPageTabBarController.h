@@ -42,4 +42,8 @@
 
 @property (strong, nonatomic) UIView *signBackView;
 @property (nonatomic, strong) MenuBtnCell *menuBtnCell;
+
+-(void)changeBtnStatus;
+
+
 @end

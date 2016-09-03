@@ -138,7 +138,7 @@
             //设置桌面图标右上角的数字
             NSInteger badgeNum = [unreadNumData.commentNum intValue] + [unreadNumData.noticeNum intValue] + [unreadNumData.messageNum intValue] + [unreadNumData.praiseNum intValue];
             [UIApplication sharedApplication].applicationIconBadgeNumber = badgeNum;
-            [APService setBadge:badgeNum];
+            [JPUSHService setBadge:badgeNum];
         } else {
             [CustomUtil showCustomAlertView:@"提示" message:unreadNumData.msg leftTitle:@"确定" rightTitle:nil leftHandle:nil rightHandle:nil target:self btnCount:1];
         }
@@ -179,7 +179,7 @@
 
             //设置桌面图标右上角的数字
             [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
-            [APService setBadge:0];
+            [JPUSHService setBadge:0];
         }
 
     }failedBlock:^(NSError *err) {

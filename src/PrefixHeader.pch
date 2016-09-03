@@ -70,7 +70,7 @@
 #import <AMapSearchKit/AMapSearchKit.h>
 
 //极光推送
-#import "APService.h"
+#import "JPUSHService.h"
 
 #import "CustomUtil.h"
 #import "MyTextField.h"

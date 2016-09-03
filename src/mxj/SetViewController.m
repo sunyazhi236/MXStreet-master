@@ -199,7 +199,7 @@
         }
             break;
         case 2:{ //消息通知
-            NoticeVCViewController *noticeVC=[[NoticeVCViewController alloc]init];
+            NoticeVCViewController *noticeVC = [NoticeVCViewController shareViewController];
             [self.navigationController pushViewController:noticeVC animated:YES];
         }
             break;
@@ -347,6 +347,10 @@
                 }
             }
             registerPageIsExist = YES;
+            [JPUSHService setTags:[NSSet set] aliasInbackground:nil];
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"userId"];
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"tagArray"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
             [self.navigationController popToViewController:viewCtrl animated:YES];
             break;
         }
